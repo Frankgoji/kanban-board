@@ -1,0 +1,1 @@
+/* Draws the kanban board and articulates all its elements and objects. */

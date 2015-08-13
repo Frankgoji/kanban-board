@@ -1,4 +1,5 @@
-A Kanban board Apache server, run by Python. For graphics either Javascript or
-something else.
+A Kanban board.
 
 - can use html5 Canvas to draw the graphics
+- use text files to store relevant information? or JSON?
+- will I need to use a server and scripts?
