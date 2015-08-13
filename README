@@ -2,4 +2,4 @@ A Kanban board.
 
 - can use html5 Canvas to draw the graphics
 - use text files to store relevant information? or JSON?
-- will I need to use a server and scripts?
+- will need to use something like Apache server
