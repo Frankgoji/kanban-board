@@ -1,0 +1,4 @@
+A Kanban board Apache server, run by Python. For graphics either Javascript or
+something else.
+
+- can use html5 Canvas to draw the graphics
