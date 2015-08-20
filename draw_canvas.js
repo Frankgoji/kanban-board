@@ -3,17 +3,16 @@
 // events--need elements like title, time, description needs to be interactive,
 // and each interaction should communicate a change to the server
 
-// constants with a default value to be determined, should be able to be
-// adjusted and rewritten
-var fontsize;
-var columnwidth;
-
 var Board = function() {
     this.columns = {do_pool: [],
                    longterm: [],
                    high_priority: [],
                    doing: [],
                    done: []};
+
+    this.canvas = document.getElementById("kanban_canvas");
+    this.ctx = this.canvas.getContext("2d");
+    this.columnwidth = this.canvas.width / 5;
 
     /* draws the board, given a list of which columns to draw or redraw.
        calling this calls the draw functions for each event in the relevant
@@ -36,15 +35,21 @@ var Board = function() {
     };
 };
 
-var Event = function(title, description, time, col) {
+var Event = function(title, description, time, col, ctx) {
     this.title = title;
     this.description = description;
     this.time = time;
     this.col = col;
+    this.ctx = ctx;
 
     /* determines the height of this event rectangle. necessary to draw the
        correct height for the board and the event */
     this.height = function() {
+        height = 0;
+        // use regex to get height of font in pixels. for the rest, try
+        // measureText
+        this.ctx.measureText(this.description);
+        return height;
     }
 
     /* draws the square for this particular event. may need to pass
@@ -55,3 +60,7 @@ var Event = function(title, description, time, col) {
 }
 
 var kanban = new Board();
+
+// constants with a default value to be determined, should be able to be
+// adjusted and rewritten
+var fontsize = 20;
