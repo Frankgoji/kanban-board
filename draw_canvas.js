@@ -48,6 +48,7 @@ var Event = function(title, description, time, col, ctx) {
         height = 0;
         // use regex to get height of font in pixels. for the rest, try
         // measureText
+        pix = \[0-9]+\
         this.ctx.measureText(this.description);
         return height;
     }
@@ -64,3 +65,6 @@ var kanban = new Board();
 // constants with a default value to be determined, should be able to be
 // adjusted and rewritten
 var fontsize = 20;
+
+pix = \[0-9]+\;
+font = "20px Ariel"
