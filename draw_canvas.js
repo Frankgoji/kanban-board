@@ -3,6 +3,10 @@
 // events--need elements like title, time, description needs to be interactive,
 // and each interaction should communicate a change to the server
 
+// constants with a default value to be determined, should be able to be
+// adjusted and rewritten
+var fontsize = 20;
+
 var Board = function() {
     this.columns = {do_pool: [],
                    longterm: [],
@@ -13,6 +17,7 @@ var Board = function() {
     this.canvas = document.getElementById("kanban_canvas");
     this.ctx = this.canvas.getContext("2d");
     this.columnwidth = this.canvas.width / 5;
+    this.ctx.font = fontsize + "px Times New Roman";
 
     /* draws the board, given a list of which columns to draw or redraw.
        calling this calls the draw functions for each event in the relevant
@@ -23,10 +28,10 @@ var Board = function() {
     /* change font size */
     this.change_font = function(font_size) {
         fontsize = font_size;
+        this.ctx.font = fontsize + "px Times New Roman";
         this.draw_board();
     }
 
-    /* get data from server and populate columns */
     this.pull_data = function() {
     };
 
@@ -35,36 +40,41 @@ var Board = function() {
     };
 };
 
-var Event = function(title, description, time, col, ctx) {
+var Event = function(title, description, time, col, board) {
     this.title = title;
     this.description = description;
     this.time = time;
     this.col = col;
-    this.ctx = ctx;
+    this.board = board;
 
     /* determines the height of this event rectangle. necessary to draw the
        correct height for the board and the event */
     this.height = function() {
-        height = 0;
-        // use regex to get height of font in pixels. for the rest, try
-        // measureText
-        pix = \[0-9]+\
-        this.ctx.measureText(this.description);
+        var height = 0;
+        var pix = /[0-9]+/;
+        var font_height = parseInt(this.board.ctx.font.match(pix)[0]);
+        var desc_width = this.board.ctx.measureText(this.description).width;
+        height += font_height + 5;
+        height += font_height * Math.ceil(desc_width / this.board.columnwidth);
         return height;
     }
 
     /* draws the square for this particular event. may need to pass
        arguments to it, like coordinates for where to draw it. color is
        dependent on place. */
-    this.draw_event = function() {
+    this.draw_event = function(x, y) {
+        // make sure to bold the title and make it 5 px bigger than normal
+        var pix = /[0-9]+/;
+        var old_font = this.board.ctx.font;
+        var title_font_height = parseInt(old_font.match(pix)[0]) + 5;
+        this.board.ctx.font = "bold " + title_font_height + "px Times New Roman";
+        this.board.ctx.fillText(this.title, x, y);
     }
 }
 
 var kanban = new Board();
 
-// constants with a default value to be determined, should be able to be
-// adjusted and rewritten
-var fontsize = 20;
-
-pix = \[0-9]+\;
-font = "20px Ariel"
+var test = new Event("what", "world", 10, 1, kanban);
+test.draw_event(10, 50);
+kanban.ctx.font = "25px Times New Roman";
+kanban.ctx.fillText("ord", 10, 80);
