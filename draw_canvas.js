@@ -7,6 +7,8 @@
 // TODO: add interactive elements, so that it can drag events to new columns
 // (change columns), and double-click to change attributes. Of course, each
 // change is registered
+//
+// Red line or gradient to signal where to place event, red box for selection
 
 // constants with a default value to be determined, should be able to be
 // adjusted and rewritten
@@ -39,6 +41,8 @@ var Board = function() {
                    high_priority: "#FF0000",
                    doing: "#FF6600",
                    done: "#999966"};
+
+    /* STATE VARIABLES FOR THE BOARD */
 
     /* draws the board.  calling this calls the draw functions for each event in
      * the relevant columns. */
