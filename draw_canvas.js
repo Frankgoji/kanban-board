@@ -9,8 +9,13 @@
 // change is registered
 //
 // Red line or gradient to signal where to place event, red box for selection
+//
+// for dragging, redraw every 30 ms. Don't need to keep mouse offset (put it in
+// the center), and compare which column to be in, then in between which events
+// to put the gradient. Once chosen AND mouseup, need to move the event (put in
+// new column array, delete from old one) before redraw. and then update.
 
-// constants with a default value to be determined, should be able to be
+// constant with a default value to be determined, should be able to be
 // adjusted and rewritten
 var fontsize = 20;
 
@@ -44,7 +49,7 @@ var Board = function() {
 
     /* STATE VARIABLES FOR THE BOARD */
 
-    /* draws the board.  calling this calls the draw functions for each event in
+    /* draws the board. calling this calls the draw functions for each event in
      * the relevant columns. */
     this.draw_board = function() {
         var col_heights = [];
