@@ -14,6 +14,15 @@
 // the center), and compare which column to be in, then in between which events
 // to put the gradient. Once chosen AND mouseup, need to move the event (put in
 // new column array, delete from old one) before redraw. and then update.
+//
+// When changing the values, what to do?
+//      simulate a text box? change in place?
+//      make alerts, prompting text (good since can do checks. also good because
+//      you can make changes to just one thing)
+//
+// How to add new events: hopefully same way as changing values BUT if using
+// alerts, it's a pain in the ass to have three alerts. Maybe an alert that has
+// three input slots? A dialog box?
 
 // constant with a default value to be determined, should be able to be
 // adjusted and rewritten
