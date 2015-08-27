@@ -58,6 +58,23 @@ var Board = function() {
 
     /* STATE VARIABLES FOR THE BOARD */
 
+    this.valid = false;
+    this.dragging = false;
+    this.selected_event = null;
+    this.in_dialog = false;
+
+    /* EVENT LISTENERS */
+
+    /* prevents selecting text when double-clicking. */
+    this.canvas.addEventListener("selectstart", function(e) { e.preventDefault();
+        return false; }, false);
+
+    /* when doubleclick, will edit event if mouse is over an event, otherwise
+     * nothing happens. */
+    this.canvas.addEventListener("dblclick", function(e) {
+        alert(e.pageX);
+    }, true);
+
     /* draws the board. calling this calls the draw functions for each event in
      * the relevant columns. */
     this.draw_board = function() {
@@ -106,6 +123,7 @@ var Board = function() {
         this.draw_board();
     }
 
+    /* pulls data from server to initiate columns */
     this.pull_data = function() {
     };
 
@@ -134,6 +152,7 @@ var Board = function() {
     };
 };
 
+// MAY NEED TO MAKE EVENT CONSTRUCTOR INCLUDE COORDINATES
 var Event = function(title, description, time, col, board) {
     this.title = title;
     this.description = description;
@@ -141,6 +160,8 @@ var Event = function(title, description, time, col, board) {
     this.col = col;
     this.board = board;
     this.board.columns[col].push(this);
+    this.x = 0;
+    this.y = 0;
 
     /* determines the height of this event rectangle. necessary to draw the
        correct height for the board and the event */
@@ -177,6 +198,6 @@ var Event = function(title, description, time, col, board) {
 
 var kanban = new Board();
 
-var test = new Event("what", "world", 10, "do_pool", kanban);
+new Event("what", "world", 10, "do_pool", kanban);
 new Event("k", "j", 292, "do_pool", kanban);
 kanban.draw_board();
