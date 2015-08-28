@@ -73,6 +73,9 @@ var Board = function() {
      * nothing happens. */
     this.canvas.addEventListener("dblclick", function(e) {
         alert(e.pageX);
+        // how to check which event? maybe instead of having each event know its
+        // place, have this iterate check manually? since when something is
+        // created we're depending on the columns to know...
     }, true);
 
     /* draws the board. calling this calls the draw functions for each event in
