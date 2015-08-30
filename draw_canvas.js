@@ -73,7 +73,8 @@ var Board = function() {
      * nothing happens. */
     this.canvas.addEventListener("dblclick", function(e) {
         alert(e.pageX);
-        // Use the sheet you drafted
+        // Use the sheet you drafted. I think that space between columns
+        // shouldn't matter but space between events should
     }, true);
 
     /* draws the board. calling this calls the draw functions for each event in
