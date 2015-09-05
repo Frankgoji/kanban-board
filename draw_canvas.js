@@ -23,6 +23,8 @@
 // How to add new events: hopefully same way as changing values BUT if using
 // alerts, it's a pain in the ass to have three alerts. Maybe an alert that has
 // three input slots? A dialog box?
+//
+// WHAT TO DO ABOUT THE MOUSE POINTER?
 
 // constant with a default value to be determined, should be able to be
 // adjusted and rewritten
@@ -76,6 +78,11 @@ var Board = function() {
         // Use the sheet you drafted. I think that space between columns
         // shouldn't matter but space between events should
     }, true);
+
+    /* gets the position of the mouse, with the offset properly adjusted */
+    this.get_mouse = function() {
+        // check if it goes in the canvas
+    };
 
     /* draws the board. calling this calls the draw functions for each event in
      * the relevant columns. */
