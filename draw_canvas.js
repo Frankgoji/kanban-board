@@ -82,6 +82,7 @@ var Board = function() {
     /* gets the position of the mouse, with the offset properly adjusted */
     this.get_mouse = function() {
         // check if it goes in the canvas
+	// make sure to correctly adjust the offsets. also, when board size changes, the offsets have to change too
     };
 
     /* draws the board. calling this calls the draw functions for each event in
