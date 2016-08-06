@@ -17,12 +17,12 @@
 //
 // When changing the values, what to do?
 //      simulate a text box? change in place?
-//      make alerts, prompting text (good since can do checks. also good because
-//      you can make changes to just one thing)
+//          Change in place using a text input form
 //
 // How to add new events: hopefully same way as changing values BUT if using
 // alerts, it's a pain in the ass to have three alerts. Maybe an alert that has
 // three input slots? A dialog box?
+//      Do same thing, change in place
 //
 // WHAT TO DO ABOUT THE MOUSE POINTER?
 
@@ -135,10 +135,12 @@ var Board = function() {
     }
 
     /* pulls data from server to initiate columns */
+    // TODO: uses Ajax
     this.pull_data = function() {
     };
 
     /* post data to server when columns or events in columns change */
+    // TODO: uses Ajax
     this.push_data = function() {
     };
 
@@ -167,7 +169,7 @@ var Board = function() {
 var Event = function(title, description, time, col, board) {
     this.title = title;
     this.description = description;
-    this.time = time;
+    this.time = time; // TODO: make this an actual date object
     this.col = col;
     this.board = board;
     this.board.columns[col].push(this);
