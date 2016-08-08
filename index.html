@@ -5,9 +5,27 @@
 <body>
 <center>
     <h1>Kanban Board</h1>
-    <canvas id="kanban_canvas" width="1200" height="600"></canvas>
+    <!-- <canvas id="kanban_canvas" width="1200" height="600"></canvas>
     <script type="text/javascript" src="draw_canvas.js">
-    </script><br>
+    </script><br> -->
+    <!--TODO: standardize event structure, use Python to access sqlite, organize events -->
+    <table style='width:100%;border-collapse:collapse' border=1>
+        <col style='width:20%;background-color:#80FF80'>
+        <col style='width:20%;background-color:#FFFF66'>
+        <col style='width:20%;background-color:#FF6666'>
+        <col style='width:20%;background-color:#FF944D'>
+        <col style='width:20%;background-color:#C2C2A3'>
+        <tr>
+            <th style='background-color:#99FF99'>Do Pool</th>
+            <th style='background-color:#FFFF80'>Longterm</th>
+            <th style='background-color:#FF8080'>High Priority</th>
+            <th style='background-color:#FFA366'>Doing</th>
+            <th style='background-color:#CCCCB2'>Done</th>
+        </tr>
+        <tr>
+            <td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td>
+        </tr>
+    </table>
 
     <!-- The footer controls are mostly for changing the font size. Also a good
     idea to use it for a button that adds new events. Also, be able to change

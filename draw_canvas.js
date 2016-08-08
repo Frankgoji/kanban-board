@@ -169,7 +169,7 @@ var Board = function() {
 var Event = function(title, description, time, col, board) {
     this.title = title;
     this.description = description;
-    this.time = time; // TODO: make this an actual date object
+    this.time = time; // TODO: remember to make this an actual date object
     this.col = col;
     this.board = board;
     this.board.columns[col].push(this);
