@@ -9,23 +9,26 @@
     <script type="text/javascript" src="draw_canvas.js">
     </script><br> -->
     <!--TODO: standardize event structure, use Python to access sqlite, organize events -->
-    <table style='width:100%;border-collapse:collapse' border=1>
-        <col style='width:20%;background-color:#80FF80'>
-        <col style='width:20%;background-color:#FFFF66'>
-        <col style='width:20%;background-color:#FF6666'>
-        <col style='width:20%;background-color:#FF944D'>
-        <col style='width:20%;background-color:#C2C2A3'>
-        <tr>
-            <th style='background-color:#99FF99'>Do Pool</th>
-            <th style='background-color:#FFFF80'>Longterm</th>
-            <th style='background-color:#FF8080'>High Priority</th>
-            <th style='background-color:#FFA366'>Doing</th>
-            <th style='background-color:#CCCCB2'>Done</th>
-        </tr>
-        <tr>
-            <td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td>
-        </tr>
-    </table>
+    <script>
+// Make functions that deal with communicating with the server
+function getTable() {
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("entry_table").innerHTML = xmlhttp.responseText;
+        }
+    };
+    xmlhttp.open("GET","../cgi-bin/food_diary.py",true);
+    xmlhttp.send();
+}
+    </script>
+    <div id='board'></div>
 
     <!-- The footer controls are mostly for changing the font size. Also a good
     idea to use it for a button that adds new events. Also, be able to change
