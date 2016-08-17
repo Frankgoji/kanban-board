@@ -21,18 +21,70 @@ function getTable() {
     }
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("entry_table").innerHTML = xmlhttp.responseText;
+            document.getElementById("board").innerHTML = xmlhttp.responseText;
         }
     };
-    xmlhttp.open("GET","../cgi-bin/food_diary.py",true);
+    xmlhttp.open("GET", "cgi-bin/event_data.py", true);
     xmlhttp.send();
+}
+getTable();
+function addEvent() {
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("board").innerHTML = xmlhttp.responseText;
+        }
+    };
+    var ids = ['date', 'column', 'title', 'description'];
+    var vals = {'date': '', 'column': '', 'title': '', 'description': ''};
+    for (var i = 0; i < ids.length; i++) {
+        vals[ids[i]] = document.getElementById(ids[i]).value;
+    }
+    xmlhttp.open("POST", "cgi-bin/event_data.py", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True");
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('date').setAttribute('value', new Date().toJSON().slice(0, 10));
+}
+function edit(id) {
+    var elem = document.getElementById(id);
+    var data = elem.getAttribute('name').split('|');
+    elem.innerHTML = '<b>TEST</b>';
+    elem.innerHTML = data;
 }
     </script>
     <div id='board'></div>
 
-    <!-- The footer controls are mostly for changing the font size. Also a good
-    idea to use it for a button that adds new events. Also, be able to change
-    size of canvas? That would be good -->
-    <div id="footer_controls"></div></center>
+    <br>
+    <br>
+    <div id="footer_controls" style='padding-right:30%;padding-left:30%'>
+        <div id='create_event' style='border:black solid 1px;background-color:lightgrey'>
+            <h2>Create Event</h2>
+            <form style='text-align:left;padding-left:25%'>
+                Title:<input id='title' type='text' name='title' value='' maxlength='50'><br>
+                Date:<input id='date' type='date' name='date' value=''><br>
+                <script>
+                    document.getElementById('date').setAttribute('value', new Date().toJSON().slice(0, 10));
+                </script>
+                Description:<textarea id='description' name='description' value='' rows='2' cols='50'></textarea><br>
+                Column:<select id='column'>
+                    <option value='do_pool'>Do Pool</option>
+                    <option value='longterm'>Longterm</option>
+                    <option value='high_priority'>High Priority</option>
+                    <option value='doing'>Doing</option>
+                    <option value='done'>Done</option>
+                </select><br>
+                <input type='button' value='Submit' onclick='addEvent()'>
+            </form>
+        </div>
+    </div>
+</center>
 </body>
 </html>
