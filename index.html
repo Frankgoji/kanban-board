@@ -116,10 +116,7 @@ function changeColumn(data) {
     xmlhttp.send("date="+data[1]+"&column="+newCol+"&title="+data[2]+"&description="+data[3]+"&addEvent=True");}, 550);
 }
 function cancel(id) {
-    var elem = document.getElementById(id);
-    elem.innerHTML = orig;
-    elem.setAttribute('onclick', 'edit("'+ id +'")');
-    orig = '';
+    getTable();
 }
     </script>
     <div id='board'></div>
