@@ -32,7 +32,7 @@ def create_event(event, row_num):
         print('</td>')
     else:
         date, col, title, desc = event
-        cell_id = 'id="{0}{1}" onclick="edit(\'{0}{1}\')" name="{2}|{3}|{4}"'.format(col, row_num, date, title, desc)
+        cell_id = 'id="{0}{1}" onclick="edit(\'{0}{1}\')" name="{0}|{2}|{3}|{4}"'.format(col, row_num, date, title, desc)
         print('<td {0}>'.format(cell_id))
         print('<b style="font-size:1.2em">{0}</b>'.format(title))
         print(date)

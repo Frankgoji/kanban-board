@@ -53,11 +53,73 @@ function addEvent() {
     document.getElementById('description').value = '';
     document.getElementById('date').setAttribute('value', new Date().toJSON().slice(0, 10));
 }
+var orig = '';
 function edit(id) {
     var elem = document.getElementById(id);
-    var data = elem.getAttribute('name').split('|');
-    elem.innerHTML = '<b>TEST</b>';
-    elem.innerHTML = data;
+    orig = elem.innerHTML;
+    elem.removeAttribute('onclick');
+    var data = elem.getAttribute('name');
+    var col = data.split('|')[0]
+    var cols = ['do_pool', 'longterm', 'high_priority', 'doing', 'done'];
+    var col_names = ['Do Pool', 'Longterm', 'High Priority', 'Doing', 'Done'];
+    var modifier = '<div style="text-align:right"><b onclick="deleteEvent(\'' + data + '\')">X</b></div>';
+    modifier += 'Move:<select id=\'change_select\' onfocusout="changeColumn(\'' + data + '\')">';
+    for (var i = 0; i < cols.length; i++) {
+        if (col != cols[i]) {
+            modifier += '<option value="'+cols[i]+'">'+col_names[i]+'</option>';
+        }
+    }
+    modifier += '</select>';
+    modifier += '<br>';
+    modifier += '<center><input type="button" value="Cancel" onclick="cancel(\'' + id + '\')"></center>';
+    elem.innerHTML = modifier;
+}
+function deleteEvent(data) {
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("board").innerHTML = xmlhttp.responseText;
+        }
+    };
+    data = data.split('|');
+    xmlhttp.open("POST", "cgi-bin/event_data.py", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True");
+}
+function changeColumn(data) {
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("board").innerHTML = xmlhttp.responseText;
+        }
+    };
+    var newCol = document.getElementById('change_select').value;
+    data = data.split('|');
+    xmlhttp.open("POST", "cgi-bin/event_data.py", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True");
+
+    setTimeout(function(){xmlhttp.open("POST", "cgi-bin/event_data.py", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("date="+data[1]+"&column="+newCol+"&title="+data[2]+"&description="+data[3]+"&addEvent=True");}, 550);
+}
+function cancel(id) {
+    var elem = document.getElementById(id);
+    elem.innerHTML = orig;
+    elem.setAttribute('onclick', 'edit("'+ id +'")');
+    orig = '';
 }
     </script>
     <div id='board'></div>
