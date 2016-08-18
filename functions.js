@@ -35,7 +35,7 @@ function addEvent() {
     for (var i = 0; i < ids.length; i++) {
         vals[ids[i]] = document.getElementById(ids[i]).value;
     }
-    vals['description'].replace(/\n/g, '<br>');
+    vals['description'] = vals['description'].replace(/\n/g, '<br>');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True");
@@ -54,7 +54,8 @@ function edit(id) {
     var cols = ['do_pool', 'longterm', 'high_priority', 'doing', 'done'];
     var col_names = ['Do Pool', 'Longterm', 'High Priority', 'Doing', 'Done'];
     var modifier = '<div style="text-align:right"><b onclick="deleteEvent(\'' + data + '\')">X</b></div>';
-    modifier += 'Move:<select id=\'change_select\' onfocusout="changeColumn(\'' + data + '\')">';
+    modifier += 'Move:<select id=\'change_select\' onchange="changeColumn(\'' + data + '\')">';
+    modifier += '<option value="'+col+'">Current Column</option>';
     for (var i = 0; i < cols.length; i++) {
         if (col != cols[i]) {
             modifier += '<option value="'+cols[i]+'">'+col_names[i]+'</option>';
