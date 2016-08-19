@@ -35,10 +35,9 @@ function addEvent() {
     for (var i = 0; i < ids.length; i++) {
         vals[ids[i]] = document.getElementById(ids[i]).value;
     }
-    vals['description'] = vals['description'].replace(/\n/g, '<br>');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True");
+    xmlhttp.send(encodeURI("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True"));
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
     document.getElementById('date').setAttribute('value', new Date().toJSON().slice(0, 10));
@@ -49,7 +48,7 @@ function edit(id) {
     var elem = document.getElementById(id);
     orig = elem.innerHTML;
     elem.removeAttribute('onclick');
-    var data = elem.getAttribute('name');
+    var data = unescape(elem.getAttribute('name')).replace(/'/g, '%27');
     var col = data.split('|')[0]
     var cols = ['do_pool', 'longterm', 'high_priority', 'doing', 'done'];
     var col_names = ['Do Pool', 'Longterm', 'High Priority', 'Doing', 'Done'];
@@ -80,6 +79,7 @@ function deleteEvent(data) {
             document.getElementById("board").innerHTML = xmlhttp.responseText;
         }
     };
+    data = decodeURI(data);
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -100,6 +100,7 @@ function changeColumn(data) {
         }
     };
     var newCol = document.getElementById('change_select').value;
+    data = decodeURI(data);
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
