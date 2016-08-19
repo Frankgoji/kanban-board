@@ -11,6 +11,7 @@ def fill_table():
     col_list = ['do_pool', 'longterm', 'high_priority', 'doing', 'done']
     for col in cols:
         cols[col] = [row for row in c.execute('select * from events where column=? order by -date', (col,))]
+        cols[col].append(col+'button')
     i = 0
     while not all((len(stack) == 0 for stack in cols.values())):
         events_rows = []
@@ -21,7 +22,7 @@ def fill_table():
 
 def create_row(event_list, row_num):
     """ html for row """
-    print('<tr>')
+    print('<tr style="height:auto">')
     for event in event_list:
         create_event(event, row_num)
     print('</tr>')
@@ -30,7 +31,10 @@ def create_event(event, row_num):
     """ html for an individual event """
     if not event:
         print('<td>')
-        print('</td>')
+    elif 'button' in event:
+        cell_id = event
+        print('<td id="{0}" style="vertical-align:middle">'.format(cell_id))
+        print('<center><h1 onclick="addCell(\'{0}\')">+</h1></center>'.format(cell_id))
     else:
         date, col, title, desc = event
         name = "{0}|{1}|{2}|{3}".format(quote(col),
@@ -43,7 +47,7 @@ def create_event(event, row_num):
         print(date)
         print('<br>')
         print(desc)
-        print('</td>')
+    print('</td>')
 
 conn = sqlite3.connect('events.db')
 c = conn.cursor()

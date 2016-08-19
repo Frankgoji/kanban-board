@@ -1,4 +1,6 @@
 // Make functions that deal with communicating with the server
+
+/** Gets the table from the database */
 function getTable() {
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -17,6 +19,7 @@ function getTable() {
 }
 getTable();
 
+/** Adds a single event to the database, then updates the table */
 function addEvent() {
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -35,6 +38,7 @@ function addEvent() {
     for (var i = 0; i < ids.length; i++) {
         vals[ids[i]] = document.getElementById(ids[i]).value;
     }
+    vals['description'] = vals['description'].replace(/\n/g, '<br>');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(encodeURI("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True"));
@@ -44,6 +48,7 @@ function addEvent() {
 }
 
 var orig = '';
+/** Edits an entry, allowing for delete, column change, and canceling */
 function edit(id) {
     var elem = document.getElementById(id);
     orig = elem.innerHTML;
@@ -66,6 +71,7 @@ function edit(id) {
     elem.innerHTML = modifier;
 }
 
+/** Deletes an event */
 function deleteEvent(data) {
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -86,6 +92,7 @@ function deleteEvent(data) {
     xmlhttp.send("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True");
 }
 
+/** Changes the column of an event */
 function changeColumn(data) {
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -109,4 +116,48 @@ function changeColumn(data) {
     setTimeout(function(){xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("date="+data[1]+"&column="+newCol+"&title="+data[2]+"&description="+data[3]+"&addEvent=True");}, 550);
+}
+
+/** Creates the format to add a cell */
+function addCell(id) {
+    var cell = document.getElementById(id);
+    var col = id.substring(0, id.length - 'button'.length);
+    cell.innerHTML = '';
+    var h3 = createElem('h3', 'Create Event', [['style', 'text-align:center']]);
+    var form = createElem('form', '', [['style', 'text-align:center']]);
+    var title = createElem('input', '', [['id', 'title'], ['type', 'text'], ['name', 'title'], ['value', ''], ['maxlength', '30']]);
+    var date = createElem('input', '', [['id', 'date'], ['type', 'date'], ['name', 'date'], ['value', '']]);
+    var script = createElem('script', 'document.getElementById("date").setAttribute("value", new Date().toJSON().slice(0,10))', []);
+    var description = createElem('textarea', '', [['id', 'description'], ['name', 'description'], ['value', ''], ['rows', '2'], ['cols', '30']]);
+    var submit = createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'addEvent()']]);
+    var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]);
+    var col = createElem('input', '', [['type', 'button'], ['id', 'column'], ['value', col], ['style', 'display:none']]);
+    cell.appendChild(h3);
+    cell.appendChild(form);
+    form.appendChild(document.createTextNode('Title:'));
+    form.appendChild(title);
+    form.appendChild(document.createElement('br'));
+    form.appendChild(document.createTextNode('Date:'));
+    form.appendChild(date);
+    form.appendChild(script);
+    form.appendChild(document.createElement('br'));
+    form.appendChild(document.createTextNode('Description:'));
+    form.appendChild(description);
+    form.appendChild(document.createElement('br'));
+    form.appendChild(col);
+    form.appendChild(submit);
+    form.appendChild(cancel);
+}
+
+/** Creates a given element with a given text element and attributes */
+function createElem(name, text, attributes) {
+    var elem = document.createElement(name);
+    if (text != '') {
+        elem.innerHTML = text;
+    }
+    for (var i = 0; i < attributes.length; i++) {
+        var pair = attributes[i];
+        elem.setAttribute(pair[0], pair[1]);
+    }
+    return elem;
 }
