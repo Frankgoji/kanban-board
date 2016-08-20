@@ -58,7 +58,6 @@ except sqlite3.OperationalError as oe:
     c.execute('create table events (date date, column text, title text, description text)')
     c.execute('select * from events')
 
-print("Content-type: text/html\n")
 
 base_table = """
 <table style='width:100%;border-collapse:collapse' border=1>
@@ -76,7 +75,6 @@ base_table = """
     </tr>
 """
 
-# TODO: execute necessary functions
 # process cgi information
 form = cgi.FieldStorage()
 if 'addEvent' in form:
@@ -92,8 +90,8 @@ elif 'deleteEvent' in form:
              form.getvalue('title', ''),
              form.getvalue('description', '')))
 
+print("Content-type: text/html\n")
 print(base_table)
-# TODO
 fill_table()
 print('</table>')
 
