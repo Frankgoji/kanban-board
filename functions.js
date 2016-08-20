@@ -50,7 +50,6 @@ function addEvent() {
 }
 
 var orig = '';
-// TODO: edit the elems
 /** Edits an entry, allowing for delete, column change, and canceling */
 function edit(id) {
     if (is_editing) {
@@ -60,14 +59,15 @@ function edit(id) {
     var elem = document.getElementById(id);
     orig = elem.innerHTML;
     elem.removeAttribute('onclick');
-    var data = unescape(elem.getAttribute('name')).replace(/'/g, '%27');
+    var data = unescape(elem.getAttribute('name'));
     var old_data = data.split('|');
     var col = old_data[0];
+	 old_data[3] = old_data[3].replace(/\<br\>/g, '\n');
     var cols = ['do_pool', 'longterm', 'high_priority', 'doing', 'done'];
     var col_names = ['Do Pool', 'Longterm', 'High Priority', 'Doing', 'Done'];
     // create the edit elements
     var right_x = createElem('div', '', [['style', 'text-align:right']]);
-    right_x.appendChild(createElem('b', 'X', [['onclick', 'deleteEvent("' + old_data + '")']]));
+    right_x.appendChild(createElem('b', 'X', [['onclick', 'deleteEvent("' + data + '")']]));
     var form = createElem('form', '', [['style', 'text-align:center']]);
     var title = createElem('input', '', [['id', 'title'], ['type', 'text'], ['name', 'title'], ['value', old_data[2]], ['maxlength', '30']]);
     var date = createElem('input', '', [['id', 'date'], ['type', 'date'], ['name', 'date'], ['value', old_data[1]]]);
@@ -129,7 +129,7 @@ function deleteEvent(data) {
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True");
+    xmlhttp.send(encodeURI("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True"));
     is_editing = false;
 }
 
@@ -152,11 +152,11 @@ function changeColumn(data) {
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True");
+    xmlhttp.send(encodeURI("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True"));
 
     setTimeout(function(){xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("date="+data[1]+"&column="+newCol+"&title="+data[2]+"&description="+data[3]+"&addEvent=True");}, 550);
+    xmlhttp.send(encodeURI("date="+data[1]+"&column="+newCol+"&title="+data[2]+"&description="+data[3]+"&addEvent=True"));}, 550);
     is_editing = false;
 }
 
