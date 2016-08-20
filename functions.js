@@ -1,5 +1,6 @@
 // Make functions that deal with communicating with the server
 
+var is_editing = false;
 /** Gets the table from the database */
 function getTable() {
     if (window.XMLHttpRequest) {
@@ -16,6 +17,7 @@ function getTable() {
     };
     xmlhttp.open("GET", "cgi-bin/event_data.py", true);
     xmlhttp.send();
+    is_editing = false;
 }
 getTable();
 
@@ -48,27 +50,65 @@ function addEvent() {
 }
 
 var orig = '';
+// TODO: edit the elems
 /** Edits an entry, allowing for delete, column change, and canceling */
 function edit(id) {
+    if (is_editing) {
+        return;
+    }
+    is_editing = true;
     var elem = document.getElementById(id);
     orig = elem.innerHTML;
     elem.removeAttribute('onclick');
     var data = unescape(elem.getAttribute('name')).replace(/'/g, '%27');
-    var col = data.split('|')[0]
+    var old_data = data.split('|');
+    var col = old_data[0];
     var cols = ['do_pool', 'longterm', 'high_priority', 'doing', 'done'];
     var col_names = ['Do Pool', 'Longterm', 'High Priority', 'Doing', 'Done'];
-    var modifier = '<div style="text-align:right"><b onclick="deleteEvent(\'' + data + '\')">X</b></div>';
-    modifier += 'Move:<select id=\'change_select\' onchange="changeColumn(\'' + data + '\')">';
-    modifier += '<option value="'+col+'">Current Column</option>';
+    // create the edit elements
+    var right_x = createElem('div', '', [['style', 'text-align:right']]);
+    right_x.appendChild(createElem('b', 'X', [['onclick', 'deleteEvent("' + old_data + '")']]));
+    var form = createElem('form', '', [['style', 'text-align:center']]);
+    var title = createElem('input', '', [['id', 'title'], ['type', 'text'], ['name', 'title'], ['value', old_data[2]], ['maxlength', '30']]);
+    var date = createElem('input', '', [['id', 'date'], ['type', 'date'], ['name', 'date'], ['value', old_data[1]]]);
+    var description = createElem('textarea', old_data[3], [['id', 'description'], ['name', 'description'], ['rows', '2'], ['cols', '30']]);
+    var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]);
+    var select = createElem('select', '', [['id', 'change_select'], ['onchange', 'changeColumn("' + data + '")']]);
+    var col = createElem('input', '', [['type', 'button'], ['id', 'column'], ['value', col], ['style', 'display:none']]);
+    select.appendChild(createElem('option', 'Current Column', [['value', col]]));
     for (var i = 0; i < cols.length; i++) {
         if (col != cols[i]) {
-            modifier += '<option value="'+cols[i]+'">'+col_names[i]+'</option>';
+            select.appendChild(createElem('option', col_names[i], [['value', cols[i]]]));
         }
     }
-    modifier += '</select>';
-    modifier += '<br>';
-    modifier += '<center><input type="button" value="Cancel" onclick="getTable()"></center>';
-    elem.innerHTML = modifier;
+    var submit = createElem('center', '', []);
+    submit.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'changeEvent("'+data+'")']]));
+    var cancel = createElem('center', '', []);
+    cancel.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]));
+    // add the elements to the cell
+    elem.innerHTML = '';
+    elem.appendChild(right_x);
+    elem.appendChild(form);
+    form.appendChild(document.createTextNode('Title:'));
+    form.appendChild(title);
+    form.appendChild(document.createElement('br'));
+    form.appendChild(document.createTextNode('Date:'));
+    form.appendChild(date);
+    form.appendChild(document.createElement('br'));
+    form.appendChild(document.createTextNode('Description:'));
+    form.appendChild(description);
+    elem.appendChild(submit);
+    form.appendChild(document.createElement('br'));
+    elem.innerHTML += 'Move:';
+    elem.appendChild(select);
+    elem.appendChild(col);
+    elem.appendChild(cancel);
+}
+
+/** Edits an event by deleting the old one and adding the new one */
+function changeEvent(data) {
+    deleteEvent(data);
+    addEvent();
 }
 
 /** Deletes an event */
@@ -90,6 +130,7 @@ function deleteEvent(data) {
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True");
+    is_editing = false;
 }
 
 /** Changes the column of an event */
@@ -116,6 +157,7 @@ function changeColumn(data) {
     setTimeout(function(){xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("date="+data[1]+"&column="+newCol+"&title="+data[2]+"&description="+data[3]+"&addEvent=True");}, 550);
+    is_editing = false;
 }
 
 /** Creates the format to add a cell */

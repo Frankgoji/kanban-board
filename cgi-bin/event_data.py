@@ -10,7 +10,7 @@ def fill_table():
             'done': []}
     col_list = ['do_pool', 'longterm', 'high_priority', 'doing', 'done']
     for col in cols:
-        cols[col] = [row for row in c.execute('select * from events where column=? order by -date', (col,))]
+        cols[col] = [row for row in c.execute('select * from events where column=? order by date', (col,))]
         cols[col].append(col+'button')
     i = 0
     while not all((len(stack) == 0 for stack in cols.values())):
