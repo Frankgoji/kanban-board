@@ -44,9 +44,6 @@ function addEvent() {
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(encodeURI("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True"));
-    document.getElementById('title').value = '';
-    document.getElementById('description').value = '';
-    document.getElementById('date').setAttribute('value', new Date().toJSON().slice(0, 10));
 }
 
 var orig = '';
@@ -169,7 +166,7 @@ function addCell(id) {
     var form = createElem('form', '', [['style', 'text-align:center']]);
     var title = createElem('input', '', [['id', 'title'], ['type', 'text'], ['name', 'title'], ['value', ''], ['maxlength', '30']]);
     var date = createElem('input', '', [['id', 'date'], ['type', 'date'], ['name', 'date'], ['value', '']]);
-    var script = createElem('script', 'document.getElementById("date").setAttribute("value", new Date().toJSON().slice(0,10))', []);
+    var script = createElem('script', 'document.getElementById("date").setAttribute("value", parseDate(new Date()))', []);
     var description = createElem('textarea', '', [['id', 'description'], ['name', 'description'], ['value', ''], ['rows', '2'], ['cols', '30']]);
     var submit = createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'addEvent()']]);
     var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]);
@@ -189,6 +186,17 @@ function addCell(id) {
     form.appendChild(col);
     form.appendChild(submit);
     form.appendChild(cancel);
+}
+
+/** Parses a date object to a string that can be used in SQLite */
+function parseDate(date) {
+    var d = date.getFullYear().toString() + '-';
+    var month = (date.getMonth() + 1).toString();
+    if (month.length == 1) {
+        month = '0' + month;
+    }
+    var day = date.getDate().toString();
+    return d + month + '-' + day;
 }
 
 /** Creates a given element with a given text element and attributes */
