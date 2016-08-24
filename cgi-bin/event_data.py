@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 # Communicates with Sqlite3 database
 
-import cgi, cgitb, sqlite3, datetime
+import cgi, cgitb, sqlite3, datetime, json
 from urllib.parse import quote
 
 def fill_table():
@@ -49,6 +49,8 @@ def create_event(event, row_num):
         print(desc)
     print('</td>')
 
+
+# Main function
 conn = sqlite3.connect('events.db')
 c = conn.cursor()
 
@@ -89,6 +91,12 @@ elif 'deleteEvent' in form:
              form.getvalue('column', ''),
              form.getvalue('title', ''),
              form.getvalue('description', '')))
+elif 'password' in form:
+    password = form.getvalue('password', '')
+    with open('credentials.json', 'r') as cred:
+        cred_pass = json.load(cred)['password']
+    if password != cred_pass:
+        exit()
 
 print("Content-type: text/html\n")
 print(base_table)
