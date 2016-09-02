@@ -192,6 +192,9 @@ function parseDate(date) {
         month = '0' + month;
     }
     var day = date.getDate().toString();
+    if (day.length == 1) {
+        day = '0' + day;
+    }
     return d + month + '-' + day;
 }
 
