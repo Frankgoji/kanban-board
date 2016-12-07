@@ -45,7 +45,7 @@ def create_event(event, row_num):
         print('<td {0}>'.format(cell_id))
         print('<b style="font-size:1.2em">{0}</b>'.format(title))
         print(date)
-        print('<button type="button" onclick="edit(\'{0}{1}\')">E</button>'.format(col, row_num))
+        print('<button style="border:none" type="button" onclick="edit(\'{0}{1}\')">E</button>'.format(col, row_num))
         print('<br>')
         print(desc)
     print('</td>')
