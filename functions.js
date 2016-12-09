@@ -123,8 +123,32 @@ function edit(id) {
 
 /** Edits an event by deleting the old one and adding the new one */
 function changeEvent(data) {
-    deleteEvent(data);
-    addEvent();
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("board").innerHTML = xmlhttp.responseText;
+        }
+    };
+    data = decodeURI(data);
+    data = data.split('|');
+    INFO = encodeURI("deldate="+data[1]+"&delcolumn="+data[0]+"&deltitle="+data[2]+"&deldescription="+data[3]);
+    var ids = ['date', 'column', 'title', 'description'];
+    var vals = {'date': '', 'column': '', 'title': '', 'description': ''};
+    for (var i = 0; i < ids.length; i++) {
+        vals[ids[i]] = document.getElementById(ids[i]).value;
+    }
+    vals['description'] = vals['description'].replace(/\n/g, '<br>');
+    INFO += encodeURI("&adddate="+vals['date']+"&addcolumn="+vals['column']+"&addtitle="+vals['title']+"&adddescription="+vals['description']+"&editEvent=True");
+    xmlhttp.open("POST", "cgi-bin/event_data.py", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send(INFO);
+    is_editing = false;
 }
 
 /** Deletes an event */

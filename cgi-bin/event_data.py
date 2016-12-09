@@ -92,6 +92,17 @@ elif 'deleteEvent' in form:
              form.getvalue('column', ''),
              form.getvalue('title', ''),
              form.getvalue('description', '')))
+elif 'editEvent' in form:
+    c.execute('delete from events where date=? and column=? and title=? and description=?',
+            (form.getvalue('deldate', ''),
+             form.getvalue('delcolumn', ''),
+             form.getvalue('deltitle', ''),
+             form.getvalue('deldescription', '')))
+    c.execute('insert into events (date, column, title, description) values \
+            (?, ?, ?, ?)', (form.getvalue('adddate', ''),
+                            form.getvalue('addcolumn', ''),
+                            form.getvalue('addtitle', ''),
+                            form.getvalue('adddescription', '')))
 elif 'password' in form:
     password = form.getvalue('password', '')
     with open('credentials.json', 'r') as cred:
