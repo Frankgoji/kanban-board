@@ -2,7 +2,7 @@
 # Communicates with Sqlite3 database
 
 import cgi, cgitb, sqlite3, datetime, json
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 def fill_table():
     """ prints html to fill in the rest of the table """
@@ -85,24 +85,24 @@ if 'addEvent' in form:
             (?, ?, ?, ?)', (form.getvalue('date', ''),
                             form.getvalue('column', ''),
                             form.getvalue('title', ''),
-                            form.getvalue('description', '')))
+                            unquote(form.getvalue('description', ''))))
 elif 'deleteEvent' in form:
     c.execute('delete from events where date=? and column=? and title=? and description=?',
             (form.getvalue('date', ''),
              form.getvalue('column', ''),
              form.getvalue('title', ''),
-             form.getvalue('description', '')))
+             unquote(form.getvalue('description', ''))))
 elif 'editEvent' in form:
     c.execute('delete from events where date=? and column=? and title=? and description=?',
             (form.getvalue('deldate', ''),
              form.getvalue('delcolumn', ''),
              form.getvalue('deltitle', ''),
-             form.getvalue('deldescription', '')))
+             unquote(form.getvalue('deldescription', ''))))
     c.execute('insert into events (date, column, title, description) values \
             (?, ?, ?, ?)', (form.getvalue('adddate', ''),
                             form.getvalue('addcolumn', ''),
                             form.getvalue('addtitle', ''),
-                            form.getvalue('adddescription', '')))
+                            unquote(form.getvalue('adddescription', ''))))
 elif 'password' in form:
     password = form.getvalue('password', '')
     with open('credentials.json', 'r') as cred:

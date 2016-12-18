@@ -60,7 +60,7 @@ function addEvent() {
     for (var i = 0; i < ids.length; i++) {
         vals[ids[i]] = document.getElementById(ids[i]).value;
     }
-    vals['description'] = vals['description'].replace(/\n/g, '<br>');
+    vals['description'] = escape(vals['description'].replace(/\n/g, '<br>'));
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(encodeURI("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True"));
@@ -137,13 +137,13 @@ function changeEvent(data) {
     };
     data = decodeURI(data);
     data = data.split('|');
-    INFO = encodeURI("deldate="+data[1]+"&delcolumn="+data[0]+"&deltitle="+data[2]+"&deldescription="+data[3]);
+    INFO = encodeURI("deldate="+data[1]+"&delcolumn="+data[0]+"&deltitle="+data[2]+"&deldescription="+escape(data[3]));
     var ids = ['date', 'column', 'title', 'description'];
     var vals = {'date': '', 'column': '', 'title': '', 'description': ''};
     for (var i = 0; i < ids.length; i++) {
         vals[ids[i]] = document.getElementById(ids[i]).value;
     }
-    vals['description'] = vals['description'].replace(/\n/g, '<br>');
+    vals['description'] = escape(vals['description'].replace(/\n/g, '<br>'));
     INFO += encodeURI("&adddate="+vals['date']+"&addcolumn="+vals['column']+"&addtitle="+vals['title']+"&adddescription="+vals['description']+"&editEvent=True");
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -169,7 +169,7 @@ function deleteEvent(data) {
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send(encodeURI("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+data[3]+"&deleteEvent=True"));
+    xmlhttp.send(encodeURI("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+escape(data[3])+"&deleteEvent=True"));
     is_editing = false;
 }
 
