@@ -46,11 +46,13 @@ def create_event(event, row_num):
     elif 'unexpand' in event:
         cell_id = event
         print('<td id="{0}" style="vertical-align:middle">'.format(cell_id))
-        print('<center><h1 onclick="getTable(false)">▲</h1></center>'.format(cell_id))
+        print('<center><h1 onclick="getTable(false)">Unexpand</h1></center>'.format(cell_id))
+        #print('<center><h1 onclick="getTable(false)">▲</h1></center>'.format(cell_id))
     elif 'expand' in event:
         cell_id = event
         print('<td id="{0}" style="vertical-align:middle">'.format(cell_id))
-        print('<center><h1 onclick="getTable(true)">▼</h1></center>'.format(cell_id))
+        print('<center><h1 onclick="getTable(true)">Expand</h1></center>'.format(cell_id))
+        #print('<center><h1 onclick="getTable(true)">▼</h1></center>'.format(cell_id))
     else:
         date, col, title, desc = event
         name = "{0}|{1}|{2}|{3}".format(quote(col),
