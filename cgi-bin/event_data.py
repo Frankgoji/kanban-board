@@ -4,7 +4,7 @@
 import cgi, cgitb, sqlite3, datetime, json
 from urllib.parse import quote, unquote
 
-def fill_table():
+def fill_table(show_all=False):
     """ prints html to fill in the rest of the table """
     cols = {'do_pool': [], 'longterm': [], 'high_priority': [], 'doing': [],
             'done': []}
@@ -12,6 +12,14 @@ def fill_table():
     for col in cols:
         cols[col] = [row for row in c.execute('select * from events where column=? order by date', (col,))]
         cols[col].append(col+'button')
+    lengths = [len(cols[c]) for c in col_list]
+    cap = sorted(lengths)[-2]
+    for col in cols:
+        if len(cols[col]) > cap + 1:
+            if not show_all:
+                cols[col] = cols[col][:cap] + [col+'expand', col+'button']
+            else:
+                cols[col][-1:] = [col+'unexpand', col+'button']
     i = 0
     while not all((len(stack) == 0 for stack in cols.values())):
         events_rows = []
@@ -35,6 +43,14 @@ def create_event(event, row_num):
         cell_id = event
         print('<td id="{0}" style="vertical-align:middle">'.format(cell_id))
         print('<center><h1 onclick="addCell(\'{0}\')">+</h1></center>'.format(cell_id))
+    elif 'unexpand' in event:
+        cell_id = event
+        print('<td id="{0}" style="vertical-align:middle">'.format(cell_id))
+        print('<center><h1 onclick="getTable(false)">▲</h1></center>'.format(cell_id))
+    elif 'expand' in event:
+        cell_id = event
+        print('<td id="{0}" style="vertical-align:middle">'.format(cell_id))
+        print('<center><h1 onclick="getTable(true)">▼</h1></center>'.format(cell_id))
     else:
         date, col, title, desc = event
         name = "{0}|{1}|{2}|{3}".format(quote(col),
@@ -110,9 +126,13 @@ elif 'password' in form:
     if password != cred_pass:
         exit()
 
+show_all = False
+if 'showAll' in form:
+    show_all = True
+
 print("Content-type: text/html\n")
 print(base_table)
-fill_table()
+fill_table(show_all)
 print('</table>')
 
 conn.commit()

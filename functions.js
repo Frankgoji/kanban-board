@@ -2,7 +2,7 @@
 
 var is_editing = false;
 /** Gets the table from the database */
-function getTable() {
+function getTable(showAll) {
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -15,8 +15,10 @@ function getTable() {
             document.getElementById("board").innerHTML = xmlhttp.responseText;
         }
     };
-    xmlhttp.open("GET", "cgi-bin/event_data.py", true);
-    xmlhttp.send();
+    var show = (showAll) ? "showAll=True" : "";
+    xmlhttp.open("POST", "cgi-bin/event_data.py", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send(show);
     is_editing = false;
 }
 
@@ -90,7 +92,7 @@ function edit(id) {
     var title = createElem('input', '', [['id', 'title'], ['type', 'text'], ['name', 'title'], ['value', old_data[2]], ['maxlength', '30']]);
     var date = createElem('input', '', [['id', 'date'], ['type', 'date'], ['name', 'date'], ['value', old_data[1]]]);
     var description = createElem('textarea', old_data[3], [['id', 'description'], ['name', 'description'], ['rows', '2'], ['cols', '30']]);
-    var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]);
+    var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable(false)']]);
     var select = createElem('select', '', [['id', 'column'], ['onchange', 'changeEvent("' + data + '")']]);
     select.appendChild(createElem('option', 'Current Column', [['value', col]]));
     for (var i = 0; i < cols.length; i++) {
@@ -101,7 +103,7 @@ function edit(id) {
     var submit = createElem('center', '', []);
     submit.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'changeEvent("'+data+'")']]));
     var cancel = createElem('center', '', []);
-    cancel.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]));
+    cancel.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable(false)']]));
     // add the elements to the cell
     elem.innerHTML = '';
     elem.appendChild(right_x);
@@ -189,7 +191,7 @@ function addCell(id) {
     var script = createElem('script', 'document.getElementById("date").setAttribute("value", parseDate(new Date()))', []);
     var description = createElem('textarea', '', [['id', 'description'], ['name', 'description'], ['value', ''], ['rows', '2'], ['cols', '30']]);
     var submit = createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'addEvent()']]);
-    var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable()']]);
+    var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable(false)']]);
     var col = createElem('input', '', [['type', 'button'], ['id', 'column'], ['value', col], ['style', 'display:none']]);
     cell.appendChild(h3);
     cell.appendChild(form);
