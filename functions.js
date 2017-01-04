@@ -79,7 +79,7 @@ function edit(id) {
     var elem = document.getElementById(id);
     orig = elem.innerHTML;
     elem.removeAttribute('onclick');
-    var data = unescape(elem.getAttribute('name'));
+    var data = elem.getAttribute('name');
     var old_data = data.split('|');
     var col = old_data[0];
 	old_data[3] = old_data[3].replace(/\<br\>/g, '\n');
@@ -137,7 +137,7 @@ function changeEvent(data) {
             document.getElementById("board").innerHTML = xmlhttp.responseText;
         }
     };
-    data = decodeURI(data);
+    data = decodeURI(unescape(data));
     data = data.split('|');
     INFO = encodeURI("deldate="+data[1]+"&delcolumn="+data[0]+"&deltitle="+data[2]+"&deldescription="+escape(data[3]));
     var ids = ['date', 'column', 'title', 'description'];
@@ -167,7 +167,7 @@ function deleteEvent(data) {
             document.getElementById("board").innerHTML = xmlhttp.responseText;
         }
     };
-    data = decodeURI(data);
+    data = decodeURI(unescape(data));
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
