@@ -82,7 +82,7 @@ function edit(id) {
     var data = elem.getAttribute('name');
     var old_data = data.split('|');
     var col = old_data[0];
-	old_data[3] = old_data[3].replace(/\<br\>/g, '\n');
+	old_data[3] = unescape(old_data[3]).replace(/\<br\>/g, '\n');
     var cols = ['do_pool', 'longterm', 'high_priority', 'doing', 'done'];
     var col_names = ['Do Pool', 'Longterm', 'High Priority', 'Doing', 'Done'];
     // create the edit elements
