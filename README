@@ -1,5 +1,3 @@
 A Kanban board.
 
-- since I'm not in the mood of using Apache, use Python for a webserver
-- can use html5 Canvas to draw the graphics [PROBABLY GONNA SETTLE FOR A TABLE]
-- use AJAX and a persistent sql database to maintain
+- uses AJAX and a persistent sqlite database to maintain state
