@@ -4,6 +4,8 @@
 import cgi, cgitb, sqlite3, datetime, json
 from urllib.parse import quote, unquote
 
+cgitb.enable()
+
 def fill_table(show_all=False):
     """ prints html to fill in the rest of the table """
     cols = {'do_pool': [], 'longterm': [], 'high_priority': [], 'doing': [],
