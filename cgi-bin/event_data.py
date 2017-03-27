@@ -6,6 +6,21 @@ from urllib.parse import quote, unquote
 
 cgitb.enable()
 
+#################### Database functions ####################
+
+def delete_limit(limit):
+    """ Deletes oldest events from Done pool until up to limit """
+    dones = list(c.execute('select count(*) from events where column="done"'))[0][0]
+    if dones > limit:
+        delete_num = dones - limit
+        to_delete = list(c.execute('select * from events where column="done" order by date limit ?', (delete_num,)))
+        for event in to_delete:
+            c.execute('delete from events where date=? and column=? and title=? and description=?',
+                    event)
+        conn.commit()
+
+#################### Table functions ####################
+
 def fill_table(show_all=False):
     """ prints html to fill in the rest of the table """
     cols = {'do_pool': [], 'longterm': [], 'high_priority': [], 'doing': [],
@@ -129,6 +144,9 @@ elif 'password' in form:
         cred_pass = json.load(cred)['password']
     if password != cred_pass:
         exit()
+
+# If more than 50 events in Done pool, delete up to 50 events
+delete_limit(50)
 
 show_all = False
 if 'showAll' in form:
