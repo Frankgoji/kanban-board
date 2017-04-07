@@ -119,7 +119,7 @@ function edit(id) {
     submit.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'changeEvent("'+data+'")']]));
     var cancel = createElem('center', '', []);
     cancel.appendChild(createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable(false)']]));
-    var googlecal = createElem('input', '', [['id', 'googlecal'], ['type', 'radio'], ['name', 'gcal'], ['value', 'true']]);
+    var googlecal = createElem('input', '', [['id', 'googlecal'], ['type', 'checkbox'], ['name', 'gcal'], ['value', 'true']]);
     // add the elements to the cell
     elem.innerHTML = '';
     elem.appendChild(right_x);
@@ -226,7 +226,7 @@ function addCell(id) {
     var submit = createElem('input', '', [['type', 'button'], ['value', 'Submit'], ['onclick', 'addEvent()']]);
     var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable(false)']]);
     var col = createElem('input', '', [['type', 'button'], ['id', 'column'], ['value', col], ['style', 'display:none']]);
-    var googlecal = createElem('input', '', [['id', 'googlecal'], ['type', 'radio'], ['name', 'gcal'], ['value', 'true']]);
+    var googlecal = createElem('input', '', [['id', 'googlecal'], ['type', 'checkbox'], ['name', 'gcal'], ['value', 'true']]);
     cell.appendChild(h3);
     cell.appendChild(form);
     form.appendChild(document.createTextNode('Title:'));
