@@ -76,7 +76,6 @@ function addEvent() {
         var d2 = new Date(d1);
         d2.setHours(d2.getHours() + 1);
         var dates = d1.toISOString().replace(/-|:|\.\d\d\d/g,"") + "/" + d2.toISOString().replace(/-|:|\.\d\d\d/g,"");
-        alert(dates);
         gcalLink += "text=" + vals['title'] + "&dates=" + dates + "&details=" + vals['description'] + "&location=&trp=false&sprop=&sprop=name:";
         window.open(gcalLink);
     }
