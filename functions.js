@@ -71,9 +71,12 @@ function addEvent() {
             gcalLink = "https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1&";
         }
         var d1 = new Date(vals['date']);
+        var localOffset = d1.getTimezoneOffset() * 60000;
+        d1 = new Date(d1.getTime() + localOffset);
         var d2 = new Date(d1);
         d2.setHours(d2.getHours() + 1);
         var dates = d1.toISOString().replace(/-|:|\.\d\d\d/g,"") + "/" + d2.toISOString().replace(/-|:|\.\d\d\d/g,"");
+        alert(dates);
         gcalLink += "text=" + vals['title'] + "&dates=" + dates + "&details=" + vals['description'] + "&location=&trp=false&sprop=&sprop=name:";
         window.open(gcalLink);
     }
@@ -174,6 +177,8 @@ function changeEvent(data) {
             gcalLink = "https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1&";
         }
         var d1 = new Date(vals['date']);
+        var localOffset = d1.getTimezoneOffset() * 60000;
+        d1 = new Date(d1.getTime() + localOffset);
         var d2 = new Date(d1);
         d2.setHours(d2.getHours() + 1);
         var dates = d1.toISOString().replace(/-|:|\.\d\d\d/g,"") + "/" + d2.toISOString().replace(/-|:|\.\d\d\d/g,"");
