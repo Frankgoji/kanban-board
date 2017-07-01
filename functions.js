@@ -81,7 +81,7 @@ function addEvent() {
     }
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send(encodeURI("date="+vals['date']+"&column="+vals['column']+"&title="+vals['title']+"&description="+vals['description']+"&addEvent=True"));
+    xmlhttp.send(encodeURI("date="+vals['date']+"&column="+vals['column']+"&title=")+encodeURIComponent(vals['title'])+"&description="+encodeURIComponent(vals['description'])+"&addEvent=True");
 	is_editing = false;
 }
 
@@ -160,14 +160,14 @@ function changeEvent(data) {
     };
     data = decodeURI(unescape(data));
     data = data.split('|');
-    INFO = encodeURI("deldate="+data[1]+"&delcolumn="+data[0]+"&deltitle="+data[2]+"&deldescription="+escape(data[3]));
+    INFO = encodeURI("deldate="+data[1]+"&delcolumn="+data[0]+"&deltitle=")+encodeURIComponent(data[2])+"&deldescription="+encodeURIComponent(data[3]);
     var ids = ['date', 'column', 'title', 'description'];
     var vals = {'date': '', 'column': '', 'title': '', 'description': ''};
     for (var i = 0; i < ids.length; i++) {
         vals[ids[i]] = document.getElementById(ids[i]).value;
     }
     vals['description'] = escape(vals['description'].replace(/\n/g, '<br>'));
-    INFO += encodeURI("&adddate="+vals['date']+"&addcolumn="+vals['column']+"&addtitle="+vals['title']+"&adddescription="+vals['description']+"&editEvent=True");
+    INFO += encodeURI("&adddate="+vals['date']+"&addcolumn="+vals['column']+"&addtitle=")+encodeURIComponent(vals['title'])+"&adddescription="+encodeURIComponent(vals['description'])+"&editEvent=True";
     // Check for Google Calendar
     var gcal = document.getElementById('googlecal');
     if (gcal.checked) {
@@ -208,7 +208,7 @@ function deleteEvent(data) {
     data = data.split('|');
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send(encodeURI("date="+data[1]+"&column="+data[0]+"&title="+data[2]+"&description="+escape(data[3])+"&deleteEvent=True"));
+    xmlhttp.send(encodeURI("date="+data[1]+"&column="+data[0]+"&title=")+encodeURIComponent(data[2])+"&description="+encodeURIComponent(data[3])+"&deleteEvent=True");
     is_editing = false;
 }
 
