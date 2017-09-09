@@ -1,0 +1,69 @@
+/* Style sheet for Kanban Board */
+
+/* Main table */
+table {
+    width: 100%;
+    border-collapse:collapse;
+}
+
+td {
+    padding: 5px;
+}
+
+tr {
+    height: auto;
+}
+
+.eventtitle {
+    font-size: 1.2em;
+}
+
+.eventcelldiv {
+    max-height: 150px;
+    overflow: auto;
+}
+
+#dopoolcol {
+    width: 20%;
+    background-color: #80FF80;
+}
+
+#longtermcol {
+    width: 20%;
+    background-color: #FFFF66;
+}
+
+#highprioritycol {
+    width: 20%;
+    background-color: #FF6666;
+}
+
+#doingcol {
+    width: 20%;
+    background-color: #FF944D;
+}
+
+#donecol {
+    width: 20%;
+    background-color: #C2C2A3;
+}
+
+#dopoolheader {
+    background-color: #99FF99;
+}
+
+#longtermheader {
+    background-color: #FFFF80;
+}
+
+#highpriorityheader {
+    background-color: #FF8080;
+}
+
+#doingheader {
+    background-color: #FFA366;
+}
+
+#doneheader {
+    background-color: #CCCCB2;
+}
