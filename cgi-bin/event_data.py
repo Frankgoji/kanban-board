@@ -47,7 +47,7 @@ def fill_table(show_all=False):
 
 def create_row(event_list, row_num):
     """ html for row """
-    print('<tr style="height:auto">')
+    print('<tr>')
     for event in event_list:
         create_event(event, row_num)
     print('</tr>')
@@ -78,11 +78,13 @@ def create_event(event, row_num):
                                         quote(desc))
         cell_id = 'id="{0}{1}" name="{2}"'.format(col, row_num, name)
         print('<td {0}>'.format(cell_id))
-        print('<b style="font-size:1.2em">{0}</b>'.format(title))
+        print('<div class="eventcelldiv">')
+        print('<b class="eventtitle">{0}</b>'.format(title))
         print(date)
         print('<button style="border:none" type="button" onclick="edit(\'{0}{1}\')">E</button>'.format(col, row_num))
         print('<br>')
         print(desc)
+        print('</div>')
     print('</td>')
 
 
@@ -98,18 +100,18 @@ except sqlite3.OperationalError as oe:
 
 
 base_table = """
-<table style='width:100%;border-collapse:collapse' border=1>
-    <col style='width:20%;background-color:#80FF80'>
-    <col style='width:20%;background-color:#FFFF66'>
-    <col style='width:20%;background-color:#FF6666'>
-    <col style='width:20%;background-color:#FF944D'>
-    <col style='width:20%;background-color:#C2C2A3'>
+<table border=1>
+    <col id='dopoolcol'>
+    <col id='longtermcol'>
+    <col id='highprioritycol'>
+    <col id='doingcol'>
+    <col id='donecol'>
     <tr>
-        <th style='background-color:#99FF99'>Do Pool</th>
-        <th style='background-color:#FFFF80'>Longterm</th>
-        <th style='background-color:#FF8080'>High Priority</th>
-        <th style='background-color:#FFA366'>Doing</th>
-        <th style='background-color:#CCCCB2'>Done</th>
+        <th id='dopoolheader'>Do Pool</th>
+        <th id='longtermheader'>Longterm</th>
+        <th id='highpriorityheader'>High Priority</th>
+        <th id='doingheader'>Doing</th>
+        <th id='doneheader'>Done</th>
     </tr>
 """
 
@@ -159,4 +161,3 @@ print('</table>')
 
 conn.commit()
 conn.close()
-
