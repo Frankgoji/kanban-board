@@ -108,7 +108,7 @@ function edit(id) {
     var form = createElem('form', '', [['style', 'text-align:center']]);
     var title = createElem('input', '', [['id', 'title'], ['type', 'text'], ['name', 'title'], ['value', old_data[2]], ['maxlength', '30']]);
     var date = createElem('input', '', [['id', 'date'], ['type', 'date'], ['name', 'date'], ['value', old_data[1]]]);
-    var description = createElem('textarea', old_data[3], [['id', 'description'], ['name', 'description'], ['onfocus', 'autogrow(this)'], ['onkeyup', 'autogrow(this)'], ['onchange', 'autogrow(this)']]);
+    var description = createElem('textarea', old_data[3], [['id', 'description'], ['name', 'description'], ['onfocus', 'autogrow(this)'], ['cols', '30'], ['onkeyup', 'autogrow(this)'], ['onchange', 'autogrow(this)']]);
     var cancel = createElem('input', '', [['type', 'button'], ['value', 'Cancel'], ['onclick', 'getTable(false)']]);
     var select = createElem('select', '', [['id', 'column'], ['onchange', 'changeEvent("' + data + '")']]);
     select.appendChild(createElem('option', 'Current Column', [['value', col]]));
