@@ -36,6 +36,9 @@ function init() {
         }
     };
     var pass = prompt('Password:');
+    //if (pass == '') {
+    //    pass = 'nullpassword';
+    //}
     xmlhttp.open("POST", "cgi-bin/event_data.py", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('password=' + pass);

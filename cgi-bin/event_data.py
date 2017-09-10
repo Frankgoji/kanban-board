@@ -78,11 +78,11 @@ def create_event(event, row_num):
                                         quote(desc))
         cell_id = 'id="{0}{1}" name="{2}"'.format(col, row_num, name)
         print('<td {0}>'.format(cell_id))
-        print('<div class="eventcelldiv">')
         print('<b class="eventtitle">{0}</b>'.format(title))
         print(date)
         print('<button style="border:none" type="button" onclick="edit(\'{0}{1}\')">E</button>'.format(col, row_num))
         print('<br>')
+        print('<div class="eventcelldiv">')
         print(desc)
         print('</div>')
     print('</td>')
@@ -140,7 +140,7 @@ elif 'editEvent' in form:
                             form.getvalue('addcolumn', ''),
                             form.getvalue('addtitle', ''),
                             unquote(form.getvalue('adddescription', ''))))
-elif 'password' in form:
+elif 'password' in form or not form.keys():
     password = form.getvalue('password', '')
     with open('credentials.json', 'r') as cred:
         cred_pass = json.load(cred)['password']
