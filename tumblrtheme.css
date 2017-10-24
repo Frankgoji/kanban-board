@@ -1,0 +1,35 @@
+/* CSS for kanban board Tumblr theme */
+
+/* Column width, margin */
+.container {
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+}
+.column {
+    display: inline-block;
+    float: left;
+    width: 24%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+}
+
+/* Column headings */
+.column_heading {
+    text-align: center;
+}
+.column_heading > h2 {
+    margin-top: 0px;
+}
+#todo_heading {
+    color: green;
+}
+#longterm_heading {
+    color: yellow;
+}
+#highpriority_heading {
+    color: red;
+}
+#doing_heading {
+    color: blue;
+}
