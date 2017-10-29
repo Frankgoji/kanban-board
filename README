@@ -3,28 +3,4 @@ A Kanban board.
 - uses AJAX and a persistent sqlite database to maintain state
 
 TODO:
-• Use Tumblr as a platform for the kanban board
-• Use the html text editor to create the board, and possibly use javascript
-    • Add the javascript either manually or possibly host via tumblr as well
-• Ideas:
-    • Use one post to house the kanban board
-        • Adding or modifying an event will both update the board and create a new
-          post
-            • The new post will basically be change history
-        • Find a way to make the board post always visible
-            • Hide posts with a certain tag
-    • Or use posts with multiple columns (prefer this idea)
-(NO)    • front page redirect to kanban tag
-(DONE)  • 4 cols (Done is just archive)
-(DONE)      • probably can filter columns with tags
-(DONE)      • TagsAsClasses
-(DONE)      • use JS and appendChild to move posts to proper column
-(DONE)          • Check {URL} to not render the board on the main page
-(DONE)      • Nice looking headings
-(NO)    • Use the way to hide posts
-(NO)    • Use tag to show all posts (bypass post limit on homepage)
-        • Edit posts using url method (get url of post, then replace post with
-          edit, then remove title from end)
-            • BUT HOW TO ADD
-                • idea: use iframe
-                • OR: use Tumblr api (needs key)
+• Make mobile version look ok

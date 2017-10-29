@@ -6,6 +6,9 @@
     -ms-text-justify: distribute-all-lines;
     text-justify: distribute-all-lines;
 }
+.container > * {
+    text-align: left;
+}
 .column {
     display: inline-block;
     float: left;
@@ -32,4 +35,27 @@
 }
 #doing_heading {
     color: blue;
+}
+
+/* Controls */
+.edit_control {
+}
+.edit_control:hover {
+    color: #818489;
+}
+.edit_control > a:link {
+    text-decoration: none;
+    font-size: 23px;
+    margin-left: 4px;
+}
+.gcal_control{
+    font-family: Arial;
+}
+.gcal_control:hover {
+    color: #818489;
+}
+.gcal_control > a:link {
+    text-decoration: none;
+    font-size: 23px;
+    margin-left: 4px;
 }

@@ -30,7 +30,7 @@
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
         <link rel="stylesheet" href="http://static.tumblr.com/27gzhx7/z94ot8t44/main-min.css">
-        <link rel="stylesheet" href="http://static.tumblr.com/9fbqoyv/xYWoy5sdp/tumblrtheme.css">
+        <link rel="stylesheet" href="http://static.tumblr.com/9fbqoyv/XNQoyilxq/tumblrtheme.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="http://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
         {/block:IfSyntaxHighlighting}
@@ -310,20 +310,23 @@
 
                 <div class="container">
                     <a href="{URL}" style="display: none" id="this_url"></a>
-                    <div id="todo_column" class="column">
+                    <div id="todo_column" style="display: none" class="column">
                         <div class="column_heading" id="todo_heading"><h2>TODO</h2></div>
                     </div>
-                    <div id="longterm_column" class="column">
+                    <div id="longterm_column" style="display: none" class="column">
                         <div class="column_heading" id="longterm_heading"><h2>LONGTERM</h2></div>
                     </div>
-                    <div id="highpriority_column" class="column">
+                    <div id="highpriority_column" style="display: none" class="column">
                         <div class="column_heading" id="highpriority_heading"><h2>HIGH PRIORITY</h2></div>
                     </div>
-                    <div id="doing_column" class="column">
+                    <div id="doing_column" style="display: none" class="column">
                         <div class="column_heading" id="doing_heading"><h2>DOING</h2></div>
                     </div>
                     <div id="main_div" class="main" style="width: 0%; margin: 0%; padding: 0%">
                         {block:Posts inlineMediaWidth="700" inlineNestedMediaWidth="700"}
+                        <!--<div class="post_class post_buttons {TagsAsClasses}">
+                            <input type="button" class="edit_button" value="Edit" onclick="editPost('{Permalink}')">
+                        </div>-->
                         <article class="post_class {block:Text}text {/block:Text}{block:Photoset}photoset {/block:Photoset}{block:Photo}photo {/block:Photo}{block:RebloggedFrom}reblogged {/block:RebloggedFrom}{block:Quote}quote {/block:Quote}{block:Link}link {/block:Link}{block:Chat}chat {/block:Chat}{block:Audio}audio {/block:Audio}{block:Video}video {/block:Video}{block:Answer}answer {/block:Answer}{block:Date}not-page post-{PostID}{/block:Date} {block:PermalinkPage} active exposed{/block:PermalinkPage} {TagsAsClasses}" {block:Date}data-post-id="{PostID}"{/block:Date} {block:SupplyLogging}data-supply-logging='{positions}'{/block:SupplyLogging}>
                                     <div class="post-wrapper clearfix">
 
@@ -341,7 +344,7 @@
                                             <div class="post-content">
                                                 {block:Title}<h2 class="title"><a href="{Permalink}">{Title}</a></h2>{/block:Title}
                                                 {block:NotReblog}
-                                                    <div class="body-text">{Body}</div>
+                                                    <div class="body-text" id="{PostID}">{Body}</div>
                                                 {/block:NotReblog}
                                                 {block:RebloggedFrom}
                                                     <div class="reblog-list">
@@ -786,7 +789,7 @@
                                                                     {/block:PermalinkPage}
                                                                 </span>
                                                             {/block:NoteCount}
-                                                            <a href="{Permalink}" title="{TimeAgo}" class="meta-item post-date">{ShortMonth} {DayOfMonth}{DayOfMonthSuffix}, {Year}</a>
+                                                            <a href="{Permalink}" title="{TimeAgo}" class="meta-item post-date" style="display: inline-block">{ShortMonth} {DayOfMonth}{DayOfMonthSuffix}, {Year}</a>
                                                         </div>
                                                     </section>
 
@@ -814,8 +817,10 @@
                                                                     </div>
                                                                 </nav>
                                                             </div>
-                                                            <div class="control reblog-control">{ReblogButton size="24" color="black"}</div>
+                                                            <!--<div class="control reblog-control">{ReblogButton size="24" color="black"}</div>-->
                                                             <div class="control like-control">{LikeButton size="24" color="black"}</div>
+                                                            <div class="control edit_control"><a href="#" onclick="editPost('{Permalink}')">Edit</a></div>
+                                                            <div class="control gcal_control"><a href="#" onclick="gCal(Date.parse('{ShortMonth} {DayOfMonth}, {Year} {24Hour}:{Minutes}'){block:Title},'{Title}'{/block:Title}{block:Text},'{PostID}'{/block:Text})">G</a></div>
                                                         </div>
                                                     </section>
 
@@ -1438,6 +1443,32 @@
                         {/block:IfRelatedPosts}
                     </div> <!-- .main -->
                     <script>
+/* Edit post using the appropriate URL */
+function editPost(url) {
+    var editURL = url.replace("post", "edit");
+    editURL = editURL.replace(/\/[^\/]*$/, "");
+    window.location.href = editURL;
+}
+/* Opens a new tab to create a Google Calendar event */
+function gCal(timestamp, title, descriptionID) {
+    var description = "";
+    if (title === undefined) {
+        title = "";
+    }
+    if (descriptionID !== undefined) {
+        description = escape(document.getElementById(descriptionID).innerHTML);
+    }
+    title = escape(title);
+    var gcalLink = "https://www.google.com/calendar/event?action=TEMPLATE&";
+    var d1 = new Date(timestamp);
+    var localOffset = d1.getTimezoneOffset() * 60000;
+    d1 = new Date(d1.getTime() + localOffset);
+    var d2 = new Date(d1);
+    d2.setHours(d2.getHours() + 1);
+    var dates = d1.toISOString().replace(/-|:|\.\d\d\d/g,"") + "/" + d2.toISOString().replace(/-|:|\.\d\d\d/g,"");
+    gcalLink += "text=" + title + "&dates=" + dates + "&details=" + description + "&location=&trp=false&sprop=&sprop=name:";
+    window.open(gcalLink);
+}
 /* Returns true if URL is for kanban board, false otherwise */
 function urlIsBoard() {
     var a_url = document.getElementById("this_url");
@@ -1449,14 +1480,19 @@ function urlIsBoard() {
 }
 /* Select all the Posts using class tag and move them into their column */
 function sortPosts(col_words, col_posts) {
+    for (var i = 0; i < col_words.length; i++) {
+        col_posts[i].setAttribute("style", "");
+    }
     var posts = document.getElementsByClassName("post_class");
     var main = document.getElementById("main_div");
     for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
-        for (var j = 0; j < col_words.length; j++) {
-            if (post.classList.contains(col_words[j])) {
-                col_posts[j].appendChild(post);
-                break;
+        if (post.parentElement.classList.contains("main")) {
+            for (var j = 0; j < col_words.length; j++) {
+                if (post.classList.contains(col_words[j])) {
+                    col_posts[j].appendChild(post);
+                    break;
+                }
             }
         }
     }
@@ -1471,15 +1507,23 @@ function main() {
     if (urlIsBoard()) {
         sortPosts(col_words, col_posts);
     } else {
-        var container = document.getElementsByClassName("container")[0];
         var main = document.getElementById("main_div");
-        for (var i = 0; i < col_posts.length; i++) {
-            container.removeChild(col_posts[i]);
-        }
         main.setAttribute("style", "");
     }
 }
+/* Mutation observer for loading in more posts */
+function observeMain() {
+    var target = document.getElementById("main_div");
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            main();
+        });
+    });
+    var config = {attributes: false, childList: true, characterData:true};
+    observer.observe(target, config);
+}
 main();
+observeMain();
                     </script>
                     <div class="sidebar" style="display: none">
                         {Block:HasHighlightedPosts}
