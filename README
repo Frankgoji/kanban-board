@@ -3,4 +3,5 @@ A Kanban board.
 - uses AJAX and a persistent sqlite database to maintain state
 
 TODO:
+• Load more posts
 • Make mobile version look ok

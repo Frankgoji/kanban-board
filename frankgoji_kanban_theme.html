@@ -24,6 +24,7 @@
         <meta name="text:Google analytics ID" content="">
         {/block:Hidden}
 
+        <!-- TODO: try and set user-scalable to yes for mobile? or play with width-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="theme-color" content="#35465D">
         <link rel="shortcut icon" href="{Favicon}">
@@ -1445,8 +1446,10 @@
                     <script>
 /* Edit post using the appropriate URL */
 function editPost(url) {
+    var blogname = window.location.href.match(/([^\/.]*)\./)[1];
     var editURL = url.replace("post", "edit");
-    editURL = editURL.replace(/\/[^\/]*$/, "");
+    editURL = editURL.replace(/\/[^\/]*$/, "?replace_to=%2Fblog%2F" + blogname);
+    editURL = editURL.replace(/[^\/.]*\./, "www.");
     window.location.href = editURL;
 }
 /* Opens a new tab to create a Google Calendar event */
@@ -1506,6 +1509,13 @@ function main() {
     }
     if (urlIsBoard()) {
         sortPosts(col_words, col_posts);
+        var space = document.createElement('div');
+        space.setAttribute("id", "spaceDiv");
+        space.style.height = "2000px";
+        space.style.clear = "both";
+        document.body.appendChild(space);
+        window.scrollTo(0, document.body.scrollHeight);
+        document.body.removeChild(space);
     } else {
         var main = document.getElementById("main_div");
         main.setAttribute("style", "");
