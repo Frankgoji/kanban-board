@@ -16,6 +16,16 @@
     margin-left: 0.5%;
     margin-right: 0.5%;
 }
+.single_column {
+    width: 99%;
+}
+.hidden {
+    display: none;
+}
+.select {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
 /* Column headings */
 .column_heading {

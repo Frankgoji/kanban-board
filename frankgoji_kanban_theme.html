@@ -24,14 +24,13 @@
         <meta name="text:Google analytics ID" content="">
         {/block:Hidden}
 
-        <!-- TODO: try and set user-scalable to yes for mobile? or play with width-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="theme-color" content="#35465D">
         <link rel="shortcut icon" href="{Favicon}">
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
         <link rel="stylesheet" href="http://static.tumblr.com/27gzhx7/z94ot8t44/main-min.css">
-        <link rel="stylesheet" href="http://static.tumblr.com/9fbqoyv/XNQoyilxq/tumblrtheme.css">
+        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/vRZp5gsv1/tumblrtheme.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="http://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
         {/block:IfSyntaxHighlighting}
@@ -309,18 +308,27 @@
                     <input type="hidden" class="tumblr-page-show-ads" data-page-show-ads="true" data-ad-positions="{AdPositions}"></input>
                 {/block:ShowAdsOnThisPage}
 
+                <div id="columnSelectDiv" class="hidden select">
+                    <select id="columnSelect" onchange="selectColumn()">
+                        <option value="todo_column">TODO</option>
+                        <option value="longterm_column">LONGTERM</option>
+                        <option value="highpriority_column">HIGH PRIORITY</option>
+                        <option value="doing_column">DOING</option>
+                    </select>
+                </div>
+
                 <div class="container">
                     <a href="{URL}" style="display: none" id="this_url"></a>
-                    <div id="todo_column" style="display: none" class="column">
+                    <div id="todo_column" class="hidden column">
                         <div class="column_heading" id="todo_heading"><h2>TODO</h2></div>
                     </div>
-                    <div id="longterm_column" style="display: none" class="column">
+                    <div id="longterm_column" class="hidden column">
                         <div class="column_heading" id="longterm_heading"><h2>LONGTERM</h2></div>
                     </div>
-                    <div id="highpriority_column" style="display: none" class="column">
+                    <div id="highpriority_column" class="hidden column">
                         <div class="column_heading" id="highpriority_heading"><h2>HIGH PRIORITY</h2></div>
                     </div>
-                    <div id="doing_column" style="display: none" class="column">
+                    <div id="doing_column" class="hidden column">
                         <div class="column_heading" id="doing_heading"><h2>DOING</h2></div>
                     </div>
                     <div id="main_div" class="main" style="width: 0%; margin: 0%; padding: 0%">
@@ -1444,6 +1452,12 @@
                         {/block:IfRelatedPosts}
                     </div> <!-- .main -->
                     <script>
+/* Column names and ids */
+var col_words = ["todo", "longterm", "highpriority", "doing"];
+var col_posts = [];
+for (var i = 0; i < col_words.length; i++) {
+    col_posts.push(document.getElementById(col_words[i] + "_column"));
+}
 /* Edit post using the appropriate URL */
 function editPost(url) {
     var blogname = window.location.href.match(/([^\/.]*)\./)[1];
@@ -1482,9 +1496,15 @@ function urlIsBoard() {
     return false;
 }
 /* Select all the Posts using class tag and move them into their column */
-function sortPosts(col_words, col_posts) {
-    for (var i = 0; i < col_words.length; i++) {
-        col_posts[i].setAttribute("style", "");
+function sortPosts(switchCols) {
+    if (!switchCols) {
+        for (var i = 0; i < col_words.length; i++) {
+            col_posts[i].classList.remove("hidden");
+        }
+    } else {
+        var select = document.getElementById("columnSelect");
+        var col = document.getElementById(select.value);
+        col.classList = ["single_column"];
     }
     var posts = document.getElementsByClassName("post_class");
     var main = document.getElementById("main_div");
@@ -1501,14 +1521,23 @@ function sortPosts(col_words, col_posts) {
     }
     main.setAttribute("style", "display: none");
 }
-function main() {
-    var col_words = ["todo", "longterm", "highpriority", "doing"];
-    var col_posts = [];
-    for (var i = 0; i < col_words.length; i++) {
-        col_posts.push(document.getElementById(col_words[i] + "_column"));
+/* Function for setting the right column to be visible */
+function selectColumn() {
+    var select = document.getElementById("columnSelect");
+    var col = document.getElementById(select.value);
+    for (var i = 0; i < col_posts.length; i++) {
+        col_posts[i].classList = ["hidden"];
     }
+    col.classList = ["single_column"];
+}
+function main() {
     if (urlIsBoard()) {
-        sortPosts(col_words, col_posts);
+        var switchCols = false;
+        if (window.innerWidth < 1000) {
+            switchCols = true;
+            document.getElementById("columnSelectDiv").classList.remove("hidden");
+        }
+        sortPosts(switchCols);
         var space = document.createElement('div');
         space.setAttribute("id", "spaceDiv");
         space.style.height = "2000px";
