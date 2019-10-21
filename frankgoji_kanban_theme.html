@@ -1514,7 +1514,7 @@ function sortPosts(switchCols) {
             for (var j = 0; j < col_words.length; j++) {
                 if (post.classList.contains(col_words[j])) {
                     col_posts[j].appendChild(post);
-                    break;
+                    post = post.cloneNode(true);
                 }
             }
         }
