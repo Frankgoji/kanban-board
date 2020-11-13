@@ -29,7 +29,7 @@
         <link rel="shortcut icon" href="{Favicon}">
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
-        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/pHnq26scn/main-min.css">
+        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/wGNqdwqoz/main-min.css">
         <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/dCTq26ush/tumblrtheme.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="https://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
@@ -835,7 +835,7 @@
                                                             <!--<div class="control reblog-control">{ReblogButton size="24" color="black"}</div>-->
                                                             <div class="control like-control">{LikeButton size="24" color="black"}</div>
                                                             <div class="control edit_control"><a href="#" onclick="editPost('{Permalink}')">Edit</a></div>
-                                                            <div class="control gcal_control"><a href="#" onclick="gCal(Date.parse('{ShortMonth} {DayOfMonth}, {Year} {24Hour}:{Minutes}'){block:Title},'{Title}'{/block:Title}{block:Text},'{PostID}'{/block:Text})">G</a></div>
+                                                            <div class="control gcal_control"><a href="#" onclick="gCal(Date.parse('{ShortMonth} {DayOfMonth}, {Year} {24Hour}:{Minutes}'){block:Text},'{PostID}'{/block:Text}{block:Title},'{Title}'{/block:Title})">📅</a></div>
                                                         </div>
                                                     </section>
 
@@ -1464,6 +1464,7 @@ var col_posts = [];
 for (var i = 0; i < col_words.length; i++) {
     col_posts.push(document.getElementById(col_words[i] + "_column"));
 }
+
 /* Edit post using the appropriate URL */
 function editPost(url) {
     var blogname = window.location.href.match(/([^\/.]*)\./)[1];
@@ -1472,14 +1473,19 @@ function editPost(url) {
     editURL = editURL.replace(/[^\/.]*\./, "www.");
     window.location.href = editURL;
 }
+
 /* Opens a new tab to create a Google Calendar event */
-function gCal(timestamp, title, descriptionID) {
-    var description = "";
-    if (title === undefined) {
-        title = "";
+function gCal(timestamp, bodyId, title) {
+    let description = '';
+    let isNeuePost = title === undefined;
+    let body = document.getElementById(bodyId);
+
+    if (isNeuePost) {
+        let h1 = body && body.querySelector('h1');
+        title = (h1) ? h1.innerHTML : '';
     }
-    if (descriptionID !== undefined) {
-        description = escape(document.getElementById(descriptionID).innerHTML);
+    if (bodyId !== undefined) {
+        description = escape(body.innerHTML);
     }
     title = escape(title);
     var gcalLink = "https://www.google.com/calendar/event?action=TEMPLATE&";
@@ -1492,6 +1498,7 @@ function gCal(timestamp, title, descriptionID) {
     gcalLink += "text=" + title + "&dates=" + dates + "&details=" + description + "&location=&trp=false&sprop=&sprop=name:";
     window.open(gcalLink);
 }
+
 /* Returns true if URL is for kanban board, false otherwise */
 function urlIsBoard() {
     var a_url = document.getElementById("this_url");
@@ -1501,6 +1508,7 @@ function urlIsBoard() {
     }
     return false;
 }
+
 /* Select all the Posts using class tag and move them into their column */
 function sortPosts(switchCols) {
     if (!switchCols) {
@@ -1527,6 +1535,7 @@ function sortPosts(switchCols) {
     }
     main.setAttribute("style", "display: none");
 }
+
 /* Function for setting the right column to be visible */
 function selectColumn() {
     var select = document.getElementById("columnSelect");
@@ -1536,6 +1545,7 @@ function selectColumn() {
     }
     col.classList = ["single_column"];
 }
+
 function main() {
     if (urlIsBoard()) {
         var switchCols = false;
@@ -1558,6 +1568,7 @@ function main() {
         main.setAttribute("style", "");
     }
 }
+
 /* Mutation observer for loading in more posts */
 function observeMain() {
     var target = document.getElementById("main_div");
