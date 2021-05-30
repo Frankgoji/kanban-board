@@ -30,7 +30,7 @@
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
         <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/wGNqdwqoz/main-min.css">
-        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/dCTq26ush/tumblrtheme.css">
+        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/vl0qtw8xt/tumblrtheme.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="https://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
         {/block:IfSyntaxHighlighting}
@@ -360,7 +360,7 @@
                                             <div class="post-content">
                                                 {block:Title}<h2 class="title"><a href="{Permalink}">{Title}</a></h2>{/block:Title}
                                                 {block:NotReblog}
-                                                    <div class="body-text {TagsAsClasses}" id="{PostID}">{Body}</div>
+                                                    <div class="body-text {TagsAsClasses}{Block:PermalinkPage} post-permalink{/Block:PermalinkPage}" id="{PostID}">{Body}</div>
                                                 {/block:NotReblog}
                                                 {block:RebloggedFrom}
                                                     <div class="reblog-list">
