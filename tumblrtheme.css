@@ -80,6 +80,10 @@
 .del {
     text-decoration: line-through;
 }
+article.scroll {
+    max-height: 100%;
+    overflow-y: none;
+}
 .scroll.post-permalink {
     max-height: 100%;
     overflow-y: none;
