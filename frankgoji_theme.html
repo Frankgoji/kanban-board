@@ -27,6 +27,7 @@
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
         <link rel="stylesheet" href="https://static.tumblr.com/ryx1vdv/Pzbqkttjt/main-min.css">
+        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/EKqquwy0k/sudoku.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="https://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
         {/block:IfSyntaxHighlighting}
@@ -872,19 +873,6 @@
                                     </div>
                                 </article>
                         {/block:Posts}
-                        <div id="sudoku"></div>
-                        <script>
-// TODO: script to check URL for sudoku, then attach the js file and hide sidebar
-/* Returns true if URL is for sudoku page, false otherwise */
-function urlIsSudoku() {
-    const a_url = document.getElementById("this_url");
-    const url = a_url.href;
-    return url.indexOf("/sudoku") !== -1;
-}
-if (urlIsSudoku()) {
-    document.getElementsByClassName('sidebar')[0].style.display = 'none';
-}
-                        </script>
                         {block:FollowingPage}
                             {block:Blogs}
                                 <div class="blog-card" style="background-color: {BackgroundColor};">
@@ -1994,7 +1982,24 @@ if (urlIsSudoku()) {
                         {/block:HasLikedPosts}
                     </div> <!-- .sidebar -->
                 </div> <!-- .container -->
+                <div id="sudoku" data="https://static.tumblr.com/9fbqoyv/GeVquwz5s/sudoku.js"></div>
             </section>
+            <script>
+/* Returns true if URL is for sudoku page, false otherwise */
+function urlIsSudoku() {
+    const a_url = document.getElementById('this_url');
+    const url = a_url.href;
+    return url.indexOf('/sudoku') !== -1;
+}
+if (urlIsSudoku()) {
+    document.getElementsByClassName('sidebar')[0].style.display = 'none';
+    const sudokuDiv = document.getElementById('sudoku');
+    const sudokuJsLink = sudokuDiv.getAttribute('data');
+    const sudokuJs = document.createElement('script');
+    sudokuJs.setAttribute('src', sudokuJsLink);
+    sudokuDiv.appendChild(sudokuJs);
+}
+            </script>
             {block:NewCta}
             {block:PermalinkPage}
             <div class="install-banner">
