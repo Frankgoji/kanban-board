@@ -5,11 +5,8 @@
     <head>
         {MobileAppHeaders}
         <meta charset="utf-8">
-        <title>{Title}{block:SearchPage} ({lang:Search results for SearchQuery}){/block:SearchPage}{block:PermalinkPage}{block:PostSummary} — {PostSummary}{/block:PostSummary}{/block:PermalinkPage}</title>
-        {block:Description}
+        <title>{Title}{block:TagPage} ({lang:Posts tagged Tag}){/block:TagPage}{block:SearchPage} ({lang:Search results for SearchQuery}){/block:SearchPage}{block:PermalinkPage}{block:PostSummary} — {PostSummary}{/block:PostSummary}{/block:PermalinkPage}</title>
         <meta name="description" content="{MetaDescription}">
-        {/block:Description}
-
         {block:Hidden}
         <meta name="if:Sliding header" content="1">
         <meta name="if:Show navigation" content="1">
@@ -29,8 +26,7 @@
         <link rel="shortcut icon" href="{Favicon}">
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
-        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/wGNqdwqoz/main-min.css">
-        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/0k5quaxj4/tumblrtheme.css">
+        <link rel="stylesheet" href="https://static.tumblr.com/ryx1vdv/Pzbqkttjt/main-min.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="https://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
         {/block:IfSyntaxHighlighting}
@@ -58,8 +54,14 @@
             .likes-no-likes,
             .related-posts-wrapper > h2,
             .loader .loader-bar,
-            .widget-title {
+            .widget-title,
+            .tagged-page-cta .tagged-page-cta-desc {
                 color: {TitleColor};
+            }
+
+            .tagged-page-cta .tagged-page-cta-tag {
+                color: {TitleColor};
+                border-color: {TitleColor};
             }
 
             a {
@@ -110,6 +112,12 @@
                 color: #fff;
             }
 
+            /* Logged-out compact Tumblr iframe */
+            .tmblr-iframe-compact .tmblr-iframe--unified-controls {
+                min-width: 100%;
+                background-color: {BackgroundColor};
+            }
+
             /* Sticky nav colors */
             .nav-fixed {
                 background-color: {BackgroundColor};
@@ -144,11 +152,13 @@
     </head>
     <body data-urlencoded-name="{URLEncodedName}" class="{select:Layout}{block:IndexPage} index-page{/block:IndexPage}{block:PermalinkPage} permalink{/block:PermalinkPage}{block:LikesPage} likes-page{/block:LikesPage}{block:FollowingPage} following-page{/block:FollowingPage}{block:SearchPage} search-page{block:NoSearchResults} no-results{/block:NoSearchResults}{block:NoLikes} no-likes{/block:NoLikes}{block:NoPosts} no-posts{/block:NoPosts}{block:NoFollowing} no-following{/block:NoFollowing}{/block:SearchPage}{block:HideHeaderImage} no-header-image{/block:HideHeaderImage}{block:NoStretchHeaderImage} contain-header-image{/block:NoStretchHeaderImage}{block:IfRelatedPosts} display-related-posts{/block:IfRelatedPosts}{block:ShowAdsOnThisPage} show-ads{/block:ShowAdsOnThisPage}">
 
+        <!-- This is in case the search engine skips the title tag-->
+        <h1 style="display: none;">{Title}{block:TagPage} ({lang:Posts tagged Tag}){/block:TagPage}{block:SearchPage} ({lang:Search results for SearchQuery}){/block:SearchPage}{block:PermalinkPage}{block:PostSummary} — {PostSummary}{/block:PostSummary}{/block:PermalinkPage}</h1>
         <div class="app-nag">
             <div class="app-nag-header clearfix">
                 <div class="app-nag-icon">
                     <div class="app-nag-icon-ios">
-                        <svg version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                              viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
                             <path fill="#36465D" d="M1024,771c0,139.2-113.8,253-253,253H253C113.8,1024,0,910.2,0,771V253C0,113.8,113.8,0,253,0h518 c139.2,0,253,113.8,253,253V771z"/>
                             <path fill="none" stroke="#FFF100" stroke-width="4" stroke-miterlimit="10" d="M463.9,209.4"/>
@@ -159,7 +169,7 @@
                         </svg>
                     </div>
                     <div class="app-nag-icon-android">
-                        <svg version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
                             <path fill="none" stroke="#FFF100" stroke-width="4" stroke-miterlimit="10" d="M463.9,209.4"></path>
                             <path opacity="0.5" fill="#231F20" d="M628.1,681c8.2,0,17.1-1.2,25.8-3.3V530.3h111.6V401.8h-68.6V473H585.4v162.4 C586,676.3,609.1,681,628.1,681z M654.4,250.5h-68.6v94h68.6V250.5z M754.3,722.9c-12.7,7.1-28.9,12.4-44.3,14.5l11.4,33.8 c-20.5,27-71.4,45.5-118.1,46.3c-1.6,0-3.1,0-4.7,0c0,0,0,0,0,0c-32.5,0-59.5-5.7-81.9-15.3c26.2,40,72.7,72.6,150.5,72.6c0,0,0,0,0,0c1.6,0,3.1,0,4.7,0c46.6-0.8,97.6-19.4,118.1-46.3L754.3,722.9z"></path>
                             <path fill="none" stroke="#FFF100" stroke-width="4" stroke-miterlimit="10" d="M355,359.5"></path>
@@ -169,7 +179,7 @@
                     </div>
                 </div>
                 <div class="app-nag-ratings">
-                    <svg width="181px" height="30px" viewBox="0 0 181 30" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+                    <svg width="181px" height="30px" viewBox="0 0 181 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                             <path d="M15.8,25.2 L6.1,29.8 L7.5,19.2 L0.1,11.4 L10.6,9.5 L15.8,0 L20.9,9.5 L31.4,11.4 L24,19.2 L25.4,29.8 L15.8,25.2 Z" fill="#FFC00E"></path>
                             <path d="M52.8,25.2 L43.1,29.8 L44.5,19.2 L37.1,11.4 L47.6,9.5 L52.8,0 L57.9,9.5 L68.4,11.4 L61,19.2 L62.4,29.8 L52.8,25.2 Z" fill="#FFC00E"></path>
@@ -187,7 +197,7 @@
                     </div>
                 </div>
                 <div class="app-nag-close-button">
-                    <svg width="15px" height="15px" viewBox="0 0 30 30" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+                    <svg width="15px" height="15px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                             <path d="M12.510351,14.6860639 L0,27.1964147 L2.175713,29.3721278 L14.686064,16.8617771 L27.196415,29.3721278 L29.372128,27.1964147 L16.861777,14.6860639 L29.372128,2.1757132 L27.196415,0 L14.686064,12.5103507 L2.175713,0 L0,2.1757132 L12.510351,14.6860639 L12.510351,14.6860639 Z" fill="#D3D3D3"></path>
                         </g>
@@ -195,7 +205,7 @@
                 </div>
             </div>
             <div class="app-nag-body">
-                <h1 class="app-nag-callout">{lang:Engagement popover title}</h1>
+                <h2 class="app-nag-callout">{lang:Engagement popover title}</h2>
                 <a class="app-nag-large-button app-nag-app-store-link button blue">{lang:Engagement popover button}</a>
                 <a class="app-nag-large-button app-nag-app-store-deny">{lang:Dismiss engagement popover}</a>
             </div>
@@ -275,9 +285,6 @@
                             <li class="nav-item nav-item--archive">
                                 <a href="/archive" class="label external-page">{lang:Archive}</a>
                             </li>
-                            <li class="nav-item nav-item--archive hidden" id="loadPostsLink">
-                                <a href="javascript:;" onclick="main()" class="label external-page">Load Posts</a>
-                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -311,47 +318,25 @@
                     <input type="hidden" class="tumblr-page-show-ads" data-page-show-ads="true" data-ad-positions="{AdPositions}"></input>
                 {/block:ShowAdsOnThisPage}
 
-                <div id="columnSelectDiv" class="hidden select">
-                    <select id="columnSelect" onchange="selectColumn()">
-                        <option value="todo_column">TODO</option>
-                        <option value="longterm_column">LONGTERM</option>
-                        <option value="highpriority_column">HIGH PRIORITY</option>
-                        <option value="doing_column">DOING</option>
-                    </select>
-                    <div id="loadPostsButton">
-                        <button onclick="main()">Load Posts</button>
-                    </div>
-                </div>
-
                 <div class="container">
                     <a href="{URL}" style="display: none" id="this_url"></a>
-                    <div id="todo_column" class="hidden column">
-                        <div class="column_heading" id="todo_heading"><h2>TODO</h2></div>
-                    </div>
-                    <div id="longterm_column" class="hidden column">
-                        <div class="column_heading" id="longterm_heading"><h2>LONGTERM</h2></div>
-                    </div>
-                    <div id="highpriority_column" class="hidden column">
-                        <div class="column_heading" id="highpriority_heading"><h2>HIGH PRIORITY</h2></div>
-                    </div>
-                    <div id="doing_column" class="hidden column">
-                        <div class="column_heading" id="doing_heading"><h2>DOING</h2></div>
-                    </div>
-                    <div id="main_div" class="main" style="width: 0%; margin: 0%; padding: 0%">
+                    <div class="main">
                         {block:Posts inlineMediaWidth="700" inlineNestedMediaWidth="700"}
-                        <!--<div class="post_class post_buttons {TagsAsClasses}">
-                            <input type="button" class="edit_button" value="Edit" onclick="editPost('{Permalink}')">
-                        </div>-->
-                        <article class="post_class {block:Text}text {/block:Text}{block:Photoset}photoset {/block:Photoset}{block:Photo}photo {/block:Photo}{block:RebloggedFrom}reblogged {/block:RebloggedFrom}{block:Quote}quote {/block:Quote}{block:Link}link {/block:Link}{block:Chat}chat {/block:Chat}{block:Audio}audio {/block:Audio}{block:Video}video {/block:Video}{block:Answer}answer {/block:Answer}{block:Date}not-page post-{PostID}{/block:Date} {block:PermalinkPage} active exposed{/block:PermalinkPage} {TagsAsClasses}" {block:Date}data-post-id="{PostID}"{/block:Date} {block:SupplyLogging}data-supply-logging='{positions}'{/block:SupplyLogging}>
+                                <article class="{block:Text}text {/block:Text}{block:Photoset}photoset {/block:Photoset}{block:Photo}photo {/block:Photo}{block:RebloggedFrom}reblogged {/block:RebloggedFrom}{block:Quote}quote {/block:Quote}{block:Link}link {/block:Link}{block:Chat}chat {/block:Chat}{block:Audio}audio {/block:Audio}{block:Video}video {/block:Video}{block:Answer}answer {/block:Answer}{block:Date}not-page post-{PostID}{/block:Date} {block:PermalinkPage} active exposed{/block:PermalinkPage}" {block:Date}data-post-id="{PostID}"{/block:Date} {block:SupplyLogging}data-supply-logging='{positions}'{/block:SupplyLogging}>
                                     <div class="post-wrapper clearfix">
 
-                                        <header class="post-header">
+                                        <header class="post-header {block:Actions}show{/block:Actions}">
                                             {block:LikesPage}
                                                 <a class="post-blog" href="{Permalink}"><img class="blog-avatar" src="{PostBlogPortraitURL-30}" data-blog-card-username="{PostBlogName}">{PostBlogName}</a>
                                             {/block:LikesPage}
                                             {block:RebloggedFrom}
                                                 <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"><i class="reblog_sm"></i>{ReblogParentName}</a>
                                             {/block:RebloggedFrom}
+                                            {block:Actions}
+                                                <div class="post-cta-action">
+                                                    <a href="{url}" rel="nofollow noreferrer noopener" target="_blank">{text}</a>
+                                                </div>
+                                            {/block:Actions}
                                         </header>
 
                                         <section class="post">
@@ -359,7 +344,7 @@
                                             <div class="post-content">
                                                 {block:Title}<h2 class="title"><a href="{Permalink}">{Title}</a></h2>{/block:Title}
                                                 {block:NotReblog}
-                                                    <div class="body-text {TagsAsClasses}{Block:PermalinkPage} post-permalink{/Block:PermalinkPage}" id="{PostID}">{Body}</div>
+                                                    <div class="body-text">{Body}</div>
                                                 {/block:NotReblog}
                                                 {block:RebloggedFrom}
                                                     <div class="reblog-list">
@@ -763,10 +748,17 @@
                                             </div>
                                             {/block:Answer}
 
-                                            <section class="inline-meta post-extra{block:RebloggedFrom} has-reblog{/block:RebloggedFrom}{block:ContentSource} has-source{/block:ContentSource}{block:HasTags} has-tags{/block:HasTags}">
+
+                                            <section class="inline-meta post-extra{block:RebloggedFrom} has-reblog{/block:RebloggedFrom}{block:ContentSource} has-source{/block:ContentSource}">
                                                 {block:ContentSource}
-                                                    <a class="meta-item source-link" href="{SourceURL}">{lang:Source}: {SourceTitle}</a>
+                                                <a class="meta-item source-link" href="{SourceURL}">{lang:Source}: {SourceTitle}</a>
                                                 {/block:ContentSource}
+                                            </section>
+
+                                            <section class="inline-meta post-extra{block:RebloggedFrom} has-reblog{/block:RebloggedFrom}{block:HasTags} has-tags{/block:HasTags}{block:PinnedPostLabel} has-rec-reason{/block:PinnedPostLabel}">
+                                                {block:PinnedPostLabel}
+                                                    <a class="meta-item recommendation-reason">{PinnedPostLabel}</a>
+                                                {/block:PinnedPostLabel}
                                                 {block:HasTags}
                                                     {block:Tags}
                                                          <a class="meta-item tag-link" href="{TagURL}">{Tag}</a>
@@ -791,7 +783,7 @@
                                                                             <section id="notes-count" class="clearfix">
                                                                                 <div class="notes-wrapper-header">
                                                                                     <span class="notes-wrapper-header-close">
-                                                                                        <svg width="15px" height="15px" viewBox="0 0 30 30" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+                                                                                        <svg width="15px" height="15px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                                                                 <path d="M12.510351,14.6860639 L0,27.1964147 L2.175713,29.3721278 L14.686064,16.8617771 L27.196415,29.3721278 L29.372128,27.1964147 L16.861777,14.6860639 L29.372128,2.1757132 L27.196415,0 L14.686064,12.5103507 L2.175713,0 L0,2.1757132 L12.510351,14.6860639 L12.510351,14.6860639 Z" fill="#D3D3D3"></path>
                                                                                             </g>
@@ -804,7 +796,7 @@
                                                                     {/block:PermalinkPage}
                                                                 </span>
                                                             {/block:NoteCount}
-                                                            <a href="{Permalink}" title="{TimeAgo}" class="meta-item post-date" style="display: inline-block">{ShortMonth} {DayOfMonth}{DayOfMonthSuffix}, {Year}</a>
+                                                            <a href="{Permalink}" title="{TimeAgo}" class="meta-item post-date">{ShortMonth} {DayOfMonth}{DayOfMonthSuffix}, {Year}</a>
                                                         </div>
                                                     </section>
 
@@ -832,10 +824,8 @@
                                                                     </div>
                                                                 </nav>
                                                             </div>
-                                                            <!--<div class="control reblog-control">{ReblogButton size="24" color="black"}</div>-->
+                                                            <div class="control reblog-control">{ReblogButton size="24" color="black"}</div>
                                                             <div class="control like-control">{LikeButton size="24" color="black"}</div>
-                                                            <div class="control edit_control"><a href="#" onclick="editPost('{Permalink}')">Edit</a></div>
-                                                            <div class="control gcal_control"><a href="#" onclick="gCal(Date.parse('{ShortMonth} {DayOfMonth}, {Year} {24Hour}:{Minutes}'){block:Text},'{PostID}'{/block:Text}{block:Title},'{Title}'{/block:Title})">📅</a></div>
                                                         </div>
                                                     </section>
 
@@ -882,6 +872,19 @@
                                     </div>
                                 </article>
                         {/block:Posts}
+                        <div id="sudoku"></div>
+                        <script>
+// TODO: script to check URL for sudoku, then attach the js file and hide sidebar
+/* Returns true if URL is for sudoku page, false otherwise */
+function urlIsSudoku() {
+    const a_url = document.getElementById("this_url");
+    const url = a_url.href;
+    return url.indexOf("/sudoku") !== -1;
+}
+if (urlIsSudoku()) {
+    document.getElementsByClassName('sidebar')[0].style.display = 'none';
+}
+                        </script>
                         {block:FollowingPage}
                             {block:Blogs}
                                 <div class="blog-card" style="background-color: {BackgroundColor};">
@@ -942,6 +945,20 @@
                                 </div>
                             {/block:Blogs}
                         {/block:FollowingPage}
+
+                        {block:PermalinkPage}
+                            {block:Posts}
+                                {block:HasRelatedTags}
+                                <section class="tagged-page-cta">
+                                    <p class="tagged-page-cta-desc">See more posts like this on Tumblr</p>
+                                    {block:RelatedTags}
+                                        <a class="tagged-page-cta-tag" href="https://tumblr.com/tagged/{URLSafeTag}" target="_blank">#{Tag}</a>
+                                    {/block:RelatedTags}
+                                </section>
+                                {/block:HasRelatedTags}
+                            {/block:Posts}
+                        {/block:PermalinkPage}
+
                         {block:IfRelatedPosts}
                             {block:RelatedPosts}
                                 <section class="related-posts-wrapper">
@@ -1457,133 +1474,10 @@
                             {/block:RelatedPosts}
                         {/block:IfRelatedPosts}
                     </div> <!-- .main -->
-                    <script>
-/* Column names and ids */
-var col_words = ["todo", "longterm", "highpriority", "doing"];
-var col_posts = [];
-for (var i = 0; i < col_words.length; i++) {
-    col_posts.push(document.getElementById(col_words[i] + "_column"));
-}
-
-/* Edit post using the appropriate URL */
-function editPost(url) {
-    var blogname = window.location.href.match(/([^\/.]*)\./)[1];
-    var editURL = url.replace("post", "edit");
-    editURL = editURL.replace(/\/[^\/]*$/, "?replace_to=%2Fblog%2F" + blogname);
-    editURL = editURL.replace(/[^\/.]*\./, "www.");
-    window.location.href = editURL;
-}
-
-/* Opens a new tab to create a Google Calendar event */
-function gCal(timestamp, bodyId, title) {
-    let description = '';
-    let isNeuePost = title === undefined;
-    let body = document.getElementById(bodyId);
-
-    if (isNeuePost) {
-        let h1 = body && body.querySelector('h1');
-        title = (h1) ? h1.innerHTML : '';
-    }
-    if (bodyId !== undefined) {
-        description = escape(body.innerHTML);
-    }
-    title = escape(title);
-    var gcalLink = "https://www.google.com/calendar/event?action=TEMPLATE&";
-    var d1 = new Date(timestamp);
-    var localOffset = d1.getTimezoneOffset() * 60000;
-    d1 = new Date(d1.getTime() + localOffset);
-    var d2 = new Date(d1);
-    d2.setHours(d2.getHours() + 1);
-    var dates = d1.toISOString().replace(/-|:|\.\d\d\d/g,"") + "/" + d2.toISOString().replace(/-|:|\.\d\d\d/g,"");
-    gcalLink += "text=" + title + "&dates=" + dates + "&details=" + description + "&location=&trp=false&sprop=&sprop=name:";
-    window.open(gcalLink);
-}
-
-/* Returns true if URL is for kanban board, false otherwise */
-function urlIsBoard() {
-    const a_url = document.getElementById("this_url");
-    const url = a_url.href;
-    return url.indexOf("tagged/kanban") !== -1;
-}
-
-/* Select all the Posts using class tag and move them into their column */
-function sortPosts(switchCols) {
-    if (!switchCols) {
-        for (var i = 0; i < col_words.length; i++) {
-            col_posts[i].classList.remove("hidden");
-        }
-    } else {
-        var select = document.getElementById("columnSelect");
-        var col = document.getElementById(select.value);
-        col.classList = ["single_column"];
-    }
-    var posts = document.getElementsByClassName("post_class");
-    var main = document.getElementById("main_div");
-    for (var i = 0; i < posts.length; i++) {
-        var post = posts[i];
-        if (post.parentElement.classList.contains("main")) {
-            for (var j = 0; j < col_words.length; j++) {
-                if (post.classList.contains(col_words[j])) {
-                    col_posts[j].appendChild(post);
-                    post = post.cloneNode(true);
-                }
-            }
-        }
-    }
-    main.setAttribute("style", "display: none");
-}
-
-/* Function for setting the right column to be visible */
-function selectColumn() {
-    var select = document.getElementById("columnSelect");
-    var col = document.getElementById(select.value);
-    for (var i = 0; i < col_posts.length; i++) {
-        col_posts[i].classList = ["hidden"];
-    }
-    col.classList = ["single_column"];
-}
-
-function main() {
-    if (urlIsBoard()) {
-        var switchCols = false;
-        if (window.innerWidth < 1000) {
-            switchCols = true;
-            document.getElementById("columnSelectDiv").classList.remove("hidden");
-        } else {
-            document.getElementById("loadPostsLink").classList.remove("hidden");
-        }
-        sortPosts(switchCols);
-        var space = document.createElement('div');
-        space.setAttribute("id", "spaceDiv");
-        space.style.height = "2000px";
-        space.style.clear = "both";
-        document.body.appendChild(space);
-        window.scrollTo(0, document.body.scrollHeight);
-        document.body.removeChild(space);
-    } else {
-        var main = document.getElementById("main_div");
-        main.setAttribute("style", "");
-    }
-}
-
-/* Mutation observer for loading in more posts */
-function observeMain() {
-    var target = document.getElementById("main_div");
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            main();
-        });
-    });
-    var config = {attributes: false, childList: true, characterData:true};
-    observer.observe(target, config);
-}
-main();
-observeMain();
-                    </script>
-                    <div class="sidebar" style="display: none">
+                    <div class="sidebar">
                         {Block:HasHighlightedPosts}
                         <div class="widget highlighted-posts">
-                            <div class="widget-title">Top Photos</div>
+                            <div class="widget-title">{lang:Top Photos}</div>
                             <div class="posts">
                             {Block:HighlightedPosts}
                                 <div class="post post-micro post-type-{PostType}" data-type="{PostType}">
@@ -1603,7 +1497,7 @@ observeMain();
 
                         {block:HasLikedPosts}
                         <div class="widget likes-widget">
-                                <div class="widget-title">Recently Liked</div>
+                                <div class="widget-title">{lang:Recently Liked}</div>
                                 {block:LikedPosts limit="1"}
                                     <article class="{block:Text}text {/block:Text}{block:Photoset}photoset {/block:Photoset}{block:Photo}photo {/block:Photo}{block:RebloggedFrom}reblogged {/block:RebloggedFrom}{block:Quote}quote {/block:Quote}{block:Link}link {/block:Link}{block:Chat}chat {/block:Chat}{block:Audio}audio {/block:Audio}{block:Video}video {/block:Video}{block:Answer}answer {/block:Answer}{block:Date}not-page post-{PostID}{/block:Date} {block:PermalinkPage} active exposed{/block:PermalinkPage}" {block:Date}data-post-id="{PostID}"{/block:Date}>
                                         <div class="post-wrapper clearfix">
@@ -2111,7 +2005,7 @@ observeMain();
                     </div>
 
                     <div class="logo-wrapper">
-                        <svg version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                              viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
                             <path fill="#36465D" d="M1024,771c0,139.2-113.8,253-253,253H253C113.8,1024,0,910.2,0,771V253C0,113.8,113.8,0,253,0h518 c139.2,0,253,113.8,253,253V771z"/>
                             <path fill="none" stroke="#FFF100" stroke-width="4" stroke-miterlimit="10" d="M463.9,209.4"/>
@@ -2209,7 +2103,7 @@ observeMain();
             ];
         </script>
 
-        <script src="https://static.tumblr.com/27gzhx7/Z5qorjizb/main-min.js"></script>
+        <script src="https://static.tumblr.com/ryx1vdv/lXRqktt8c/main-min.js"></script>
 
         {block:IfGoogleAnalyticsID}
             <script>
@@ -2224,7 +2118,7 @@ observeMain();
 
         {block:IfRelatedPosts}
             {block:RelatedPosts}
-                <script src="https://secure.static.tumblr.com/t1owtkf/bSAnvroul/jquery.waypoints.min.js" type="text/javascript"></script>
+                <script src="https://static.tumblr.com/t1owtkf/bSAnvroul/jquery.waypoints.min.js" type="text/javascript"></script>
                 <script type="text/javascript">
                     $(function() {
                         var trackingPixels = {TrackingPixels};
