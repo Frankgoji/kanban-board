@@ -99,3 +99,15 @@ article.scroll {
     background: grey;
     border-radius: 5px;
 }
+.todo .post-wrapper {
+    background: #c9ffda;
+}
+.longterm .post-wrapper {
+    background: #fcffc9;
+}
+.highpriority .post-wrapper {
+    background: #ffc0c0;
+}
+.doing .post-wrapper {
+    background: #c0e8ff;
+}
