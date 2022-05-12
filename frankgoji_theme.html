@@ -340,7 +340,7 @@
                                             {/block:Actions}
                                         </header>
 
-                                        <section class="post">
+                                        <section id="{PostID}" class="post">
                                             {block:Text}
                                             <div class="post-content">
                                                 {block:Title}<h2 class="title"><a href="{Permalink}">{Title}</a></h2>{/block:Title}
@@ -383,6 +383,23 @@
                                                     </div>
                                                 {/block:RebloggedFrom}
                                             </div>
+                                            <script>
+                                                /* Process images for NPF posts to enforce showing the highest quality image */
+                                                function processImgs(id, npf) {
+                                                    // add onclick on the anchor which will replace the src of the lightbox image with the highest resolution
+                                                    const npfImgs = npf.content.filter(o => o.type === 'image');
+                                                    const post = document.getElementById(id);
+                                                    for (const [i, a] of post.querySelectorAll('figure a').entries()) {
+                                                        a.onclick = async () => {
+                                                            await new Promise(r => setTimeout(r, 100));
+                                                            const url = npfImgs[i].media[0].url;
+                                                            document.querySelector('.tmblr-lightbox .lightbox-image').src = url;
+                                                        };
+                                                    }
+                                                }
+
+                                                processImgs("{PostID}", {NPF});
+                                            </script>
                                             {/block:Text}
 
                                             {block:Photo}
