@@ -322,6 +322,12 @@
                         <button onclick="main()">Load Posts</button>
                     </div>
                 </div>
+                <div id="searchDiv" style="margin-bottom: 20px; text-align: center;">
+                    <input id="searchPost" type="text" style="width: 70%"></input>
+                    <button onclick="searchPosts()">
+                        Search
+                    </button>
+                </div>
 
                 <div class="container">
                     <a href="{URL}" style="display: none" id="this_url"></a>
@@ -1472,6 +1478,26 @@ function editPost(postId, blogUrl) {
     window.location.href = editURL;
 }
 
+/* Filter posts based on the current search */
+function searchPosts() {
+    const searchVal = document.getElementById('searchPost').value.toLowerCase();
+    const posts = document.getElementsByClassName("post_class");
+    for (const post of posts) {
+        if (!searchVal) {
+            post.classList.remove('hidden');
+            continue;
+        }
+        const [title, body] = [post.querySelector('.title'), post.querySelector('.body-text')];
+        const titleSearch = title && title.innerHTML.toLowerCase().indexOf(searchVal) !== -1;
+        const bodySearch = body && body.innerHTML.toLowerCase().indexOf(searchVal) !== -1;
+        if (titleSearch || bodySearch) {
+            post.classList.remove('hidden');
+        } else {
+            post.classList.add('hidden');
+        }
+    }
+}
+
 /* Opens a new tab to create a Google Calendar event */
 function gCal(timestamp, bodyId, title) {
     let description = '';
@@ -1561,6 +1587,7 @@ function main() {
     } else {
         var main = document.getElementById("main_div");
         main.setAttribute("style", "");
+        document.getElementById('searchDiv').classList.add('hidden');
     }
 }
 
