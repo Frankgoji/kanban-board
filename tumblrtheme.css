@@ -49,6 +49,9 @@
 #doing_heading {
     color: blue;
 }
+#done_heading {
+    color: grey;
+}
 
 /* Controls */
 .edit_control {
@@ -110,4 +113,7 @@ article.scroll {
 }
 .doing .post-wrapper {
     background: #c0e8ff;
+}
+.done .post-wrapper {
+    background: #dfdfdf;
 }

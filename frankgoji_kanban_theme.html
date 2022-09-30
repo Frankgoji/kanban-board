@@ -30,7 +30,7 @@
         <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
         <link rel="alternate" type="application/rss+xml" href="{RSS}">
         <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/wGNqdwqoz/main-min.css">
-        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/B1Ar7mxx8/tumblrtheme.css">
+        <link rel="stylesheet" href="https://static.tumblr.com/9fbqoyv/aj3rj0739/tumblrtheme.css">
         {block:IfSyntaxHighlighting}
         <link rel="stylesheet" href="https://static.tumblr.com/ehm1tdz/2VWnye81h/tumblr-highlightjs.css">
         {/block:IfSyntaxHighlighting}
@@ -314,9 +314,10 @@
                 <div id="columnSelectDiv" class="hidden select">
                     <select id="columnSelect" onchange="selectColumn()">
                         <option value="todo_column">TODO</option>
-                        <option value="longterm_column">LONGTERM</option>
+                        <!--<option value="longterm_column">LONGTERM</option>-->
                         <option value="highpriority_column">HIGH PRIORITY</option>
                         <option value="doing_column">DOING</option>
+                        <option value="done_column">DONE</option>
                     </select>
                     <div id="loadPostsButton">
                         <button onclick="main()">Load Posts</button>
@@ -334,14 +335,17 @@
                     <div id="todo_column" class="hidden column">
                         <div class="column_heading" id="todo_heading"><h2>TODO</h2></div>
                     </div>
-                    <div id="longterm_column" class="hidden column">
+                    <!--<div id="longterm_column" class="hidden column">
                         <div class="column_heading" id="longterm_heading"><h2>LONGTERM</h2></div>
-                    </div>
+                    </div>-->
                     <div id="highpriority_column" class="hidden column">
                         <div class="column_heading" id="highpriority_heading"><h2>HIGH PRIORITY</h2></div>
                     </div>
                     <div id="doing_column" class="hidden column">
                         <div class="column_heading" id="doing_heading"><h2>DOING</h2></div>
+                    </div>
+                    <div id="done_column" class="hidden column">
+                        <div class="column_heading" id="done_heading"><h2>DONE</h2></div>
                     </div>
                     <div id="main_div" class="main" style="width: 0%; margin: 0%; padding: 0%">
                         {block:Posts inlineMediaWidth="700" inlineNestedMediaWidth="700"}
@@ -1465,7 +1469,8 @@
                     </div> <!-- .main -->
                     <script>
 /* Column names and ids */
-var col_words = ["todo", "longterm", "highpriority", "doing"];
+//var col_words = ["todo", "longterm", "highpriority", "doing"];
+var col_words = ["todo", "highpriority", "doing", "done"];
 var col_posts = [];
 for (var i = 0; i < col_words.length; i++) {
     col_posts.push(document.getElementById(col_words[i] + "_column"));
