@@ -383,9 +383,10 @@
                                                     </div>
                                                 {/block:RebloggedFrom}
                                             </div>
-                                            <script>
+                                            <!--<script>
                                                 /* Process images for NPF posts to enforce showing the highest quality image */
                                                 function processImgs(id, npf) {
+                                                    console.log('processing images for ' + id);
                                                     // add onclick on the anchor which will replace the src of the lightbox image with the highest resolution
                                                     const npfImgs = npf.content.filter(o => o.type === 'image');
                                                     const post = document.getElementById(id);
@@ -399,7 +400,7 @@
                                                 }
 
                                                 processImgs("{PostID}", {NPF});
-                                            </script>
+                                            </script>-->
                                             {/block:Text}
 
                                             {block:Photo}
