@@ -278,6 +278,9 @@
                             <li class="nav-item nav-item--archive hidden" id="loadPostsLink">
                                 <a href="javascript:;" onclick="main()" class="label external-page">Load Posts</a>
                             </li>
+                            <li class="nav-item nav-item--archive hidden" id="clear_done">
+                                <a href="javascript:;" onclick="clearDone()" class="label external-page">Clear Done Posts</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -846,6 +849,7 @@
                                                             <div class="control like-control">{LikeButton size="24" color="black"}</div>
                                                             <div class="control edit_control"><a href="#" onclick="editPost('{PostID}', '{BlogURL}')">✎</a></div>
                                                             <div class="control gcal_control"><a href="#" onclick="gCal(Date.parse('{ShortMonth} {DayOfMonth}, {Year} {24Hour}:{Minutes}'){block:Text},'{PostID}'{/block:Text}{block:Title},'{Title}'{/block:Title})">📅</a></div>
+                                                            <div class="control edit_control"><a href="#" onclick="donePost('{PostID}')">✔</a></div>
                                                         </div>
                                                     </section>
 
@@ -1572,6 +1576,45 @@ function selectColumn() {
     col.classList = ["single_column"];
 }
 
+/* Done post using the appropriate URL:
+ * Get OAuth authorization; need to get the postId to construct state properly.
+ */
+function donePost(postId) {
+    const apiKey = 'YOUR_API_KEY';
+    const stateObj = {op: 'done', value: postId};
+    const state = btoa(JSON.stringify(stateObj));
+    const authorizeUrl = 'https://www.tumblr.com/oauth2/authorize?client_id=' + apiKey + '&response_type=code&scope=write&state=' + state;
+    document.location.href = authorizeUrl;
+}
+
+/* Detect if this URL is the result of redirect from OAuth2 */
+function isRedirect() {
+    return document.location.search.indexOf('code') !== -1;
+}
+
+/* Done post using the appropriate URL:
+ * Get OAuth authorization; need to get the postId to construct state properly.
+ */
+function clearDone() {
+    const month_resp = prompt('Which month do you want to clear? [1-12]');
+    const month = Number(month_resp);
+    if (isNaN(month) || !(1 <= month && month <= 12)) {
+        alert('Please input a number from 1 to 12');
+        return;
+    }
+    const apiKey = 'YOUR_API_KEY';
+    const stateObj = {op: 'clear', value: month_resp};
+    const state = btoa(JSON.stringify(stateObj));
+    const authorizeUrl = 'https://www.tumblr.com/oauth2/authorize?client_id=' + apiKey + '&response_type=code&scope=write&state=' + state;
+    document.location.href = authorizeUrl;
+}
+
+/* Detect if this URL is the Done tab */
+function isDoneTab() {
+    return document.location.href.indexOf('tagged/done') !== -1;
+}
+
+
 function main() {
     if (urlIsBoard()) {
         var switchCols = false;
@@ -1589,6 +1632,12 @@ function main() {
         document.body.appendChild(space);
         window.scrollTo(0, document.body.scrollHeight);
         document.body.removeChild(space);
+    } else if (isRedirect()) {
+        const search = document.location.search;
+        document.location.href = 'https://frankgoji.github.io/kanban-redirect' + search;
+    } else if (isDoneTab()) {
+        document.getElementById("clear_done").classList.remove("hidden");
+        document.getElementById('searchDiv').classList.add('hidden');
     } else {
         var main = document.getElementById("main_div");
         main.setAttribute("style", "");
