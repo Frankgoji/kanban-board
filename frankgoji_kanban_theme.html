@@ -1587,11 +1587,6 @@ function donePost(postId) {
     document.location.href = authorizeUrl;
 }
 
-/* Detect if this URL is the result of redirect from OAuth2 */
-function isRedirect() {
-    return document.location.search.indexOf('code') !== -1;
-}
-
 /* Done post using the appropriate URL:
  * Get OAuth authorization; need to get the postId to construct state properly.
  */
@@ -1632,9 +1627,6 @@ function main() {
         document.body.appendChild(space);
         window.scrollTo(0, document.body.scrollHeight);
         document.body.removeChild(space);
-    } else if (isRedirect()) {
-        const search = document.location.search;
-        document.location.href = 'https://frankgoji.github.io/kanban-redirect' + search;
     } else if (isDoneTab()) {
         document.getElementById("clear_done").classList.remove("hidden");
         document.getElementById('searchDiv').classList.add('hidden');
